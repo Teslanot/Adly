@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+<!-- подключил шаблон html для наследования -->
+
+{% block title %}  Test {% endblock %}
+
+{% block content %}
+    <h1>Это тестовая страница</h1>
+    <h2>Я ее унаследовал от base.html</h2>
+
+    <a href="{% url 'test2'%}">Ссылка на 2 страницу</a>
+
+
+{% endblock %}
