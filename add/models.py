@@ -32,3 +32,28 @@ class User(models.Model):
 
 
 
+class Advertisement(models.Model):
+    title = models.CharField("Заголовок",max_length= 128)
+    prices = models.DecimalField(' цена' , max_digits= 10 , decimal_places = 2)
+    created = models.DateField(auto_now_add= True)
+    descriptions = models.TextField('описание')
+    update = models.DateField(auto_now= True)
+    auction = models.BooleanField('merch', help_text= 'Уместен ли торг')
+
+    def __str__(self) -> str:
+        return f'Advertisements(id = {self.id}, title = {self.title}, prices = {self.prices})'
+
+
+    class Meta:
+       db_table = 'Advertisements'
+
+
+
+
+
+# from add.models import Advertisement
+
+
+
+# from django.db import connection
+# connection.queries
