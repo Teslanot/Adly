@@ -9,6 +9,19 @@ from django.utils.html import format_html # для создания строки
 # Create your models here.
 # тестовый класс
 
+from django.contrib.auth import get_user_model
+
+
+
+User = get_user_model()
+
+
+
+
+
+
+
+
 
 
 class User(models.Model):
@@ -47,7 +60,7 @@ class Advertisement(models.Model):
     descriptions = models.TextField('описание')
     update = models.DateField(auto_now= True)
     auction = models.BooleanField('merch', help_text= 'Уместен ли торг')
-
+    user = models.ForeignKey(User,models.CASCADE)
     def __str__(self) -> str:
         return f'Advertisements(id = {self.id}, title = {self.title}, prices = {self.prices})'
 
@@ -59,7 +72,7 @@ class Advertisement(models.Model):
     @admin.display(description='дата создания')
     def created_date(self):
         if self.created == timezone.now().date():#проверяю что запись была создана сегодня
-            created_time = self.created.strftime('%H:%M:%S') #формат 17:14:25
+            created_time = self.created.strftime('%H:%M:%S')#формат 17:14:25
             return format_html(
                 '<span style="color:green; font-weight:bold">сегодня в {}</span>',created_time
             )

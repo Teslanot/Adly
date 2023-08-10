@@ -11,7 +11,8 @@ def home(request):
 def top_sellers(request):
     return render(request, 'top-sellers.html')
 
-
+# def index(request):
+#     context = {'advertisements': {ad}}
 
 def test(request):
     return render(request, 'test.html')
