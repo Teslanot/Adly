@@ -30,7 +30,8 @@ from lesson_4.views import lesson
 # создали функцию в views.py
 # в главном маршрутизаторе urls.py импортировали эту функцию 
 # и создали ссылку
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -38,3 +39,5 @@ urlpatterns = [
     path("", include('add.urls')), # подключил марштрутизатор приложения add
     path("lesson_4/", lesson)
 ]   
+if settings.DEBUG : # если файт в разработке
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT ) # указал ссылку и путь к файлу медиа

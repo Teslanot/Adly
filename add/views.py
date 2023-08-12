@@ -1,12 +1,17 @@
 from django.shortcuts import render # для того чтобы отдавать html
 
-# Create your views here.
+from .models import Advertisement
 
 
 # функции-представления
+# <!-- {{}}  - это переменная -->
+# <!-- {% %}  - это блоки с функционалом -->
+# <!-- {% if else while for %}  - это блоки с функционалом -->
 
 def home(request):
-    return render(request, 'index.html')
+    data = Advertisement.objects.all() # беру все записи из БД
+    context = {'advertisements' : data} # словарь
+    return render(request, 'index.html', context)
 
 def top_sellers(request):
     return render(request, 'top-sellers.html')
