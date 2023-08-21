@@ -35,7 +35,6 @@ class Cats(models.Model):
 # py manage.py migrate
 # заголовок - описание - цена - дата создания - дата обновления - тогр
 User = get_user_model()
-
 class Advertisement(models.Model):
     title = models.CharField("Заголовок",max_length= 128)
     descriptions = models.TextField('описание')
@@ -87,6 +86,7 @@ class Advertisement(models.Model):
                 "<img src = 'http://127.0.0.1:8000/media/advertisements/no_image.jpg' width='100px' heigth = '100px' ",
                 
             )
+
 
 
     # представление в виде строки 

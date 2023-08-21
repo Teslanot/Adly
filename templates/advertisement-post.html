@@ -1,55 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="css/fontello.css">
-  <title>Advertisement-post</title>
-</head>
+{% extends 'base.html' %}
+<!-- подключил шаблон html для наследования -->
 
-<body>
+{% block title %} Advertisement-post {% endblock %}
 
 
-  <ul class="nav nav-pills sticky-top bg-white nav-fill">
-    <li class="nav-item">
-      <a class="nav-link" href="index.html">
-        <span style="font-weight: bold;">Главная</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="top-sellers.html"><span style="font-weight: bold;">Топ продавцов</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link active" aria-current="page" href="advertisement-post.html">
-        <span style="font-weight: bold;">Разместить объявление</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="register.html">
-        <span style="font-weight: bold;">Регистрация</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="login.html">
-        <span style="font-weight: bold;">Войти</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="profile.html">
-        <span style="font-weight: bold;">Профиль</span>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">
-        <span style="font-weight: bold;">Выйти</span>
-      </a>
-    </li>
-  </ul>
+{% block content %}
+<ul class="nav nav-pills sticky-top bg-white nav-fill">
+  <li class="nav-item">
+    <a class="nav-link " aria-current="page" href="{%url 'home' %}">
+      <span style="font-weight: bold;">Главная</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{%url 'top_sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" href="{%url 'post_adv' %}">
+      <span style="font-weight: bold;">Разместить объявление</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="register.html">
+      <span style="font-weight: bold;">Регистрация</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="login.html">
+      <span style="font-weight: bold;">Войти</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="profile.html">
+      <span style="font-weight: bold;">Профиль</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <span style="font-weight: bold;">Выйти</span>
+    </a>
+  </li>
+</ul>
+  
   <div class="row">
     <div class="col" style="margin: 50px;">
       <div class="display-2">
@@ -58,55 +51,30 @@
     </div>
   </div>
   <div class="container">
-    <form method="post">
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Title</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="text" class="form-control form-control-lg">
+
+
+    <!-- form - тег для создания формы -->
+    <!-- enctype="multipart/form-data"  -позволяет отправлять медиа данные  -->
+    <form method="post" enctype="multipart/form-data" >
+      <!-- автоматическая отправка токена -->
+      {% csrf_token %}
+      <div class="row mb-3 offset-sm-4">
+          <div class="col-6">
+            {{form.as_p}}
+            <!-- as_p as_table as_ul -->
           </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Description</label>
-          <div class="col-sm-4 offset-4 w-25">
-              <label for="" class="form-label"></label>
-              <textarea class="form-control" name="" id="" rows="3"></textarea>
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Photo</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="file" class="form-control form-control-lg">
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Price</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="text" class="form-control form-control-lg">
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <div class="offset-4 w-25">
-            <input type="checkbox" class="form-check-input">
-            <label class="form-check-label">Auction</label>
-          </div>
-        </div>
-      </div>
+
+      </div>  
+
+
       <div class="row mb-3 offset-sm-5">
         <div class="col">
           <button type="submit" class="btn btn-success">Принять</button>
         </div>
       </div>
     </form>
+
+    <!-- конец формы  -->
+    
   </div>
-  <script src="js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+  {% endblock %}
