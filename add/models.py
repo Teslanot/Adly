@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib import admin
 from django.utils import timezone # для времени
 from django.utils.html import format_html # для создания строки html 
-
+from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
 
 
@@ -36,7 +36,7 @@ class Cats(models.Model):
 # заголовок - описание - цена - дата создания - дата обновления - тогр
 User = get_user_model()
 class Advertisement(models.Model):
-    title = models.CharField("Заголовок",max_length= 128)
+    title = models.CharField("Заголовок",max_length= 128,validators=[RegexValidator('[?+-/%]', inverse_match=True)])
     descriptions = models.TextField('описание')
     prices = models.DecimalField(' цена' , max_digits= 10 , decimal_places = 2)
     auction = models.BooleanField('merch', help_text= 'Уместен ли торг')
