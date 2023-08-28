@@ -9,7 +9,7 @@
 {% block content %}
 <ul class="nav nav-pills sticky-top bg-white nav-fill">
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'home' %}">
+    <a class="nav-link active" aria-current="page" href="{% url 'home' %}">
       <span style="font-weight: bold;">Главная</span>
     </a>
   </li>
@@ -22,26 +22,25 @@
       <span style="font-weight: bold;">Разместить объявление</span>
     </a>
   </li>
+  {% if user.is_authenticated %} 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'sign_in' %}">
-      <span style="font-weight: bold;">Регистрация</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'login' %}">
-      <span style="font-weight: bold;">Войти</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">
+    <a class="nav-link" href="{% url 'profile' %}">
       <span style="font-weight: bold;">Профиль</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'logout' %}">
       <span style="font-weight: bold;">Выйти</span>
-    </a>
+    </a> 
   </li>
+  {% else %} 
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Войти</a> 
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'sign_in' %}">Регистрация</a>
+  </li> 
+  {% endif %}
 </ul>
 
 <div id="carouselExampleControls" class="carousel slide bg-primary" data-bs-ride="carousel">
@@ -117,11 +116,11 @@
             </h5>
             <a href="advertisement.html" class="nav-link">
               <p class="card-text">
-                {{adv.description}}
+                {{adv.descriptions}}
               </p>
               <span>Автор: {{adv.user}}</span>
-              <p class="card-text"><small class="text-muted">{{adv.created_at}}</small></p>
-              <span>Цена: {{adv.price}}</span>
+              <p class="card-text"><small class="text-muted">{{adv.created}}</small></p>
+              <span>Цена: {{adv.prices}}</span>
             </a>
           </div>
         </div>

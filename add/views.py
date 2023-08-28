@@ -4,9 +4,11 @@ from .models import Advertisement
 # from .forms import AdverisementForm
 from .forms import Advforma
 from django.core.handlers.wsgi import WSGIRequest
-
 from django.contrib.auth.decorators import login_required # если пользователь не авторизован перенаправляем его
 from django.urls import reverse_lazy # как reverse но только ленивая функция
+
+
+
 
 # функции-представления
 # <!-- {{}}  - это переменная -->
@@ -46,7 +48,10 @@ def post_adv(request: WSGIRequest):
 
     else: # GET или другие
         form = Advforma()
-# ----------------------------------------------------------------
+
+
+
+ 
 
 
 # def post_adv(request: WSGIRequest):

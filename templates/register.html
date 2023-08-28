@@ -17,27 +17,28 @@
       <span style="font-weight: bold;">Разместить объявление</span>
     </a>
   </li>
+  {% if user.is_authenticated %} 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'sign_in' %}">
-      <span style="font-weight: bold;">Регистрация</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'login' %}">
-      <span style="font-weight: bold;">Войти</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">
+    <a class="nav-link" href="{% url 'profile' %}">
       <span style="font-weight: bold;">Профиль</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'logout' %}">
       <span style="font-weight: bold;">Выйти</span>
-    </a>
+    </a> 
   </li>
+  {% else %} 
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Войти</a> 
+  </li>
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="{% url 'sign_in' %}">Регистрация</a>
+  </li> 
+  {% endif %}
 </ul>
+
+
   <div class="row">
     <div class="col" style="margin: 50px;">
       <div class="display-2">
@@ -55,49 +56,15 @@
       </div>
     </div>
   </div>
+    
   <div class="container">
-    <form method="post">
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Username</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="text" class="form-control form-control-lg">
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Name</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="text" class="form-control form-control-lg">
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Surname</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="text" class="form-control form-control-lg">
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Password</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="password" class="form-control form-control-lg">
-          </div>
-        </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Password confirmation</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input type="password" class="form-control form-control-lg">
-            <div class="form-label bg-warning" style="margin: 10px 0px;">Ошибка (если будет)</div>
-          </div>
-        </div>
-      </div>
+    <form method="post"> 
+      {% csrf_token %} 
+      {{ form.as_p }} 
+            <!-- as_p as_table as_ul -->
+
+
+
       <div class="row mb-3 offset-sm-5">
         <div class="col">
           <button type="submit" class="btn btn-success">Принять</button>

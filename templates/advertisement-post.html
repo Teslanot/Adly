@@ -17,30 +17,29 @@
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'post_adv' %}">
-      <span style="font-weight: bold;">Разместить объявление</span>
+    <a class="nav-link active"  aria-current="page" href="{% url 'post_adv' %}">
+      <span style="font-weight: bold;" >Разместить объявление</span>
     </a>
   </li>
+  {% if user.is_authenticated %} 
   <li class="nav-item">
-    <a class="nav-link" href="{% url 'sign_in' %}">
-      <span style="font-weight: bold;">Регистрация</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'login' %}">
-      <span style="font-weight: bold;">Войти</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">
+    <a class="nav-link" href="{% url 'profile' %}">
       <span style="font-weight: bold;">Профиль</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="{% url 'logout' %}">
       <span style="font-weight: bold;">Выйти</span>
-    </a>
+    </a> 
   </li>
+  {% else %} 
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">Войти</a> 
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'sign_in' %}">Регистрация</a>
+  </li> 
+  {% endif %}
 </ul>
   
   <div class="row">

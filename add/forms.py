@@ -3,7 +3,8 @@ from django.forms import ModelForm
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from add.models import Advertisement
-
+from django.contrib.auth.forms import UserCreationForm 
+from django.contrib.auth.models import User 
 
 # ModelForm----------------
 class Advforma(ModelForm): 
@@ -22,10 +23,9 @@ class Advforma(ModelForm):
 
 
 form = Advforma()
-
-
 # AdverisementForm
 # END -----------
+
 
 # forms.Form---------------
 # class AdverisementForm(forms.Form):

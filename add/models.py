@@ -25,9 +25,6 @@ class Cats(models.Model):
 
 
 
-
-
-
 # главный
 
 # venv/Scripts/activate   
