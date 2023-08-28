@@ -5,7 +5,8 @@ from .models import Advertisement
 from .forms import Advforma
 from django.core.handlers.wsgi import WSGIRequest
 
-
+from django.contrib.auth.decorators import login_required # если пользователь не авторизован перенаправляем его
+from django.urls import reverse_lazy # как reverse но только ленивая функция
 
 # функции-представления
 # <!-- {{}}  - это переменная -->
@@ -19,6 +20,7 @@ def home(request):
 
 
 # AdvForma
+@login_required(login_url=reverse_lazy('login'))
 def post_adv(request: WSGIRequest):
     
     print('request.GET',request.GET)

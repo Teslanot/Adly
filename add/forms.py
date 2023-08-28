@@ -1,6 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
 from add.models import Advertisement
 
 
@@ -11,8 +12,17 @@ class Advforma(ModelForm):
         fields = ['title', 'descriptions', 'prices', 'auction', 'image']
 
 
+    def clean_title(self):
+        title = self.cleaned_data['title'] # извлек название из данных пользователя
+        if title.startswith('?'):# проверяю что начинеается с ?
+            raise ValidationError("Название не может начинаться с ?")
+        return title    # если не ? то возвращаю title обратно
+
+
+
 
 form = Advforma()
+
 
 # AdverisementForm
 # END -----------

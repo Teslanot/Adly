@@ -37,7 +37,11 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include('add.urls')), # подключил марштрутизатор приложения add
-    path("lesson_4/", lesson)
-]   
-if settings.DEBUG : # если файт в разработке
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT ) # указал ссылку и путь к файлу медиа
+    path("lesson_4/", lesson),
+    path('auth/', include('app_auth.urls')),
+
+]
+
+
+if settings.DEBUG: # если дебаггинг включен
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) # подключаю ссылки медиа файло

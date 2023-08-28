@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
-<!-- подключили шаблон(унаследовали) -->
+<!-- подключение шаблона -->
 {% load static %}
-<!-- подлючакете переменную static которая указывает ссылку на статические файлы -->
-<!-- http://127.0.0.1:8000/static/ -->
+<!-- подключение переменой статики  static =    http://127.0.0.1:8000/static/-->
 {% block title %}
 Главная
 {% endblock %}
@@ -10,36 +9,36 @@
 {% block content %}
 <ul class="nav nav-pills sticky-top bg-white nav-fill">
   <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{%url 'home'%}">
+    <a class="nav-link" href="{% url 'home' %}">
       <span style="font-weight: bold;">Главная</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{%url 'top_sellers'%}"><span style="font-weight: bold;">Топ продавцов</span>
+    <a class="nav-link" href="{% url 'top_sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="{%url 'post_adv'%}">
+    <a class="nav-link" href="{% url 'post_adv' %}">
       <span style="font-weight: bold;">Разместить объявление</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="register.html">
+    <a class="nav-link" href="{% url 'sign_in' %}">
       <span style="font-weight: bold;">Регистрация</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="login.html">
+    <a class="nav-link" href="{% url 'login' %}">
       <span style="font-weight: bold;">Войти</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="profile.html">
+    <a class="nav-link active" aria-current="page" href="{% url 'profile' %}">
       <span style="font-weight: bold;">Профиль</span>
     </a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">
+    <a class="nav-link" href="{% url 'logout' %}">
       <span style="font-weight: bold;">Выйти</span>
     </a>
   </li>
@@ -48,8 +47,7 @@
 <div id="carouselExampleControls" class="carousel slide bg-primary" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-  <!-- http://127.0.0.1:8000/static/img/adv.png -->
-      <img src="{%static 'img/adv.png'%}" class="mx-auto d-block w-33" alt="...">
+      <img src="{% static 'img/adv.png' %}" class="mx-auto d-block w-33" alt="...">
     </div>
     <div class="carousel-item">
       <img src="{% static 'img/adv.png' %}" class="mx-auto d-block w-33" alt="...">
@@ -99,22 +97,17 @@
   </div>
   <div class="col">
 
-    
-   
-
-
-    <!-- начало моего обьявления -->
-    {% for adv in advertisements%}
+    <!-- блок обьявления -->
+    {% for adv in advertisiments%}
     <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
       <div class="row g-0">
         <div class="col-md-4">
           <a href="advertisement.html" class="nav-link">
-            {% if adv.image %}  <!-- проверяю что есть картинка -->
-              <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card title">
-            {% else %}  <!-- иначе -->
-              <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
+            {% if adv.image %}
+            <img src="  {{adv.image.url}} " class="img-fluid rounded-start" alt="Card title">
+            {% else %}
+            <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
             {% endif %}
-            
           </a>
         </div>
         <div class="col-md-8">
@@ -124,20 +117,104 @@
             </h5>
             <a href="advertisement.html" class="nav-link">
               <p class="card-text">
-                {{adv.descriptions}}
+                {{adv.description}}
               </p>
               <span>Автор: {{adv.user}}</span>
-              <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
-              <span>Цена: {{adv.prices}}</span>
+              <p class="card-text"><small class="text-muted">{{adv.created_at}}</small></p>
+              <span>Цена: {{adv.price}}</span>
             </a>
           </div>
         </div>
       </div>
     </div>
-    {% endfor %}
-    <!-- конец обьявления -->
+    {% endfor %} <!-- закрытие цикла -->
+    <!-- блок обьявления -->
 
 
+
+
+
+    <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <a href="advertisement.html" class="nav-link">
+            <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
+          </a>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="advertisement.html" class="nav-link"><strong>Продаю балкон</strong></a>
+            </h5>
+            <a href="advertisement.html" class="nav-link">
+              <p class="card-text">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, nulla eos neque dolorum quis aliquid
+                deleniti molestias, nobis debitis expedita, fugiat ea. Delectus harum quo dolores modi cupiditate in
+                tempore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas quis similique quas
+                architecto doloremque culpa consequatur excepturi provident quo fugit repudiandae inventore quae ea
+                sequi, recusandae aliquid veritatis rerum quibusdam?
+              </p>
+              <span>Автор: Никнейм автора объявления</span>
+              <p class="card-text"><small class="text-muted">Размещено: здесь должна стоять дата</small></p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <a href="advertisement.html" class="nav-link">
+            <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
+          </a>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="advertisement.html" class="nav-link"><strong>Продам гараж</strong></a>
+            </h5>
+            <a href="advertisement.html" class="nav-link">
+              <p class="card-text">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, nulla eos neque dolorum quis aliquid
+                deleniti molestias, nobis debitis expedita, fugiat ea. Delectus harum quo dolores modi cupiditate in
+                tempore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas quis similique quas
+                architecto doloremque culpa consequatur excepturi provident quo fugit repudiandae inventore quae ea
+                sequi, recusandae aliquid veritatis rerum quibusdam?
+              </p>
+              <span>Автор: Никнейм автора объявления</span>
+              <p class="card-text"><small class="text-muted">Размещено: здесь должна стоять дата</small></p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <a href="advertisement.html" class="nav-link">
+            <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
+          </a>
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <a href="advertisement.html" class="nav-link"><strong>Куплю баню</strong></a>
+            </h5>
+            <a href="advertisement.html" class="nav-link">
+              <p class="card-text">
+                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas, nulla eos neque dolorum quis aliquid
+                deleniti molestias, nobis debitis expedita, fugiat ea. Delectus harum quo dolores modi cupiditate in
+                tempore. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas quis similique quas
+                architecto doloremque culpa consequatur excepturi provident quo fugit repudiandae inventore quae ea
+                sequi, recusandae aliquid veritatis rerum quibusdam?
+              </p>
+              <span>Автор: Никнейм автора объявления</span>
+              <p class="card-text"><small class="text-muted">Размещено: здесь должна стоять дата</small></p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 <footer style="padding: 100px;" class="bg-primary">
