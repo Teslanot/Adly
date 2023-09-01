@@ -1,0 +1,178 @@
+{% extends 'base.html' %}
+<!-- подключили шаблон(унаследовали) -->
+{% load static %}
+<!-- подлючакете переменную static которая указывает ссылку на статические файлы -->
+<!-- http://127.0.0.1:8000/static/ -->
+{% block title %}   Новинки    {% endblock %}
+
+
+
+{% block content %}
+
+<footer style="padding: 25px;" class="bg-primary">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+      <a class="navbar-brand" href="#">Добавьте</a>
+      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+              data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+              aria-label="Toggle navigation"></button>
+      <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#" aria-current="page">сюда<span
+                    class="visually-hidden">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">что</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true"
+               aria-expanded="false">хотите</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownId">
+              <a class="dropdown-item" href="#">например</a>
+              <a class="dropdown-item" href="https://www.youtube.com/">Youtube</a>
+            </div>
+          </li>
+        </ul>
+        <form class="row g-3" method="get">
+          <div class="col-md-8">
+            <input type="text" class="form-control" name='query' value="{% if title %}{{title}}{% endif %}">
+            <!-- если есть title то соатвляю его в строке  -->
+          </div>
+          <div class="col-auto ">
+            <button type="submit" class="btn btn-success mb-3">Найти</button>
+          </div>
+        </form>
+      </div>
+    </nav>
+</footer>
+<ul class="nav nav-pills sticky-top bg-white nav-fill">
+    <li class="nav-item">
+      <a class="nav-link active" href="{% url 'home' %}">
+        <span style="font-weight: bold;">Главная</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'top_sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'post_adv' %}">
+        <span style="font-weight: bold;">Разместить объявление</span>
+      </a>
+    </li>
+    <!-- если пользователь не авторизован -->
+    {% if not user.is_authenticated %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'sign_in' %}">
+        <span style="font-weight: bold;">Регистрация</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'login' %}">
+        <span style="font-weight: bold;">Войти</span>
+      </a>
+    </li>
+    {% else %}
+    <li class="nav-item">
+      <a class="nav-link " aria-current="page" href="{% url 'profile' %}">
+        <span style="font-weight: bold;">Профиль</span>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'logout' %}">
+        <span style="font-weight: bold;">Выйти</span>
+      </a>
+    </li>
+    {% endif %}
+</ul>
+
+
+
+<!-- 
+<div class="offset-sm-11">
+    <button href = "{% url 'adv_filter' pk=1 %}" type="button" class="btn btn-info">Неделя</button>
+</div>
+<div class="offset-sm-11">
+    <button href = "{% url 'adv_filter' pk=2 %}"  type="button" class="btn btn-info">Месяц</button>
+</div>
+<div class="offset-sm-11">
+    <button href = "{% url 'adv_filter' pk=3 %}"  type="button" class="btn btn-info">Все</button>
+</div> -->
+
+  
+
+<div class="container">
+    <div class="row">
+      <ul class="nav nav-tabs bg-white">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="..">Проверенные продавцы</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">Новинки</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Избранное</a>
+        </li>
+      </ul>
+    </div>
+
+  
+
+
+
+</div>
+<div class="col">
+
+  
+ 
+
+
+  <!-- начало моего обьявления -->
+{% for adv in advertisements%}
+  <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <a href="{{ adv.get_absolute_url }}" class="nav-link">
+          {% if adv.image %}  <!-- проверяю что есть картинка -->
+            <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card title">
+          {% else %}  <!-- иначе -->
+            <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
+          {% endif %}
+          
+        </a>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="{{ adv.get_absolute_url }}" class="nav-link"><strong>{{adv.title}}</strong></a>
+          </h5>
+          <a href="{{ adv.get_absolute_url }}" class="nav-link">
+            <p class="card-text">
+              {{adv.descriptions}}
+            </p>
+            <span>Автор: {{adv.user}}</span>
+            <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
+            <span>Цена: {{adv.prices}}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+  <!-- конец обьявления -->
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

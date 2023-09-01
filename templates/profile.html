@@ -1,6 +1,17 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
+
+{% block title %} Профиль {% endblock %}
+
 {% block content %}
+<footer style="padding: 50px;" class="bg-primary">
+  <nav class="navbar navbar-expand-sm navbar-dark">
+    <a class="navbar-brand" href="../../post_adv">Добавьте сюда что хотите</a>
+    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+      data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+      aria-label="Toggle navigation"></button>
+  </nav>
+</footer>
   <ul class="nav nav-pills sticky-top bg-white nav-fill">
     <li class="nav-item">
       <a class="nav-link" href="{% url 'home' %}">
@@ -37,7 +48,7 @@
     {% endif %}
   </ul>
 <div class="col" style="margin: 50px;">
-  <div class="display-2">
+  <div class="display-5">
     <span class="badge bg-primary">Сейчас вы находитесь на сайте под ником {{ user }}.</span>
   </div>
 </div>

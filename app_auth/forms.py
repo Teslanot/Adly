@@ -7,6 +7,6 @@ from django.contrib.auth.models import User
 class CustomUserCreationForm(UserCreationForm): 
     class Meta: 
         model =  User
-        fields = ('password','username','first_name','last_name','email') 
+        fields = ('username','first_name','last_name','email','password') 
 
 # End REGISTRATION --------------------------------

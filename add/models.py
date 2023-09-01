@@ -1,26 +1,21 @@
 from django.db import models
 from django.contrib import admin
+
+
 from django.utils import timezone # для времени
 from django.utils.html import format_html # для создания строки html 
+
+
 from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
+from django.urls import reverse 
 
 
 
-# class User(models.Model):
-
-#     GENDER_CHOICE = [
-#         ('Ork', 'Ork'),
-#         ('Furri', 'Furri'),
-#         ('Iron', 'Iron'),
-#     ]
-
-
-
-class Cats(models.Model):
-    name = models.CharField(max_length=50)
-    age = models.IntegerField()
-    breed = models.CharField(max_length=50)
+# class Cats(models.Model):
+#     name = models.CharField(max_length=50)
+#     age = models.IntegerField()
+#     breed = models.CharField(max_length=50)
 
 
 
@@ -30,29 +25,31 @@ class Cats(models.Model):
 # venv/Scripts/activate   
 # py manage.py makemigrations
 # py manage.py migrate
+
+
 # заголовок - описание - цена - дата создания - дата обновления - тогр
 User = get_user_model()
 class Advertisement(models.Model):
-    title = models.CharField("Заголовок",max_length= 128,validators=[RegexValidator('[?+-/%]', inverse_match=True)])
+    title = models.CharField("Заголовок",max_length= 128)#validators=[RegexValidator('[?+-/%]', inverse_match=True)]
     descriptions = models.TextField('описание')
     prices = models.DecimalField(' цена' , max_digits= 10 , decimal_places = 2)
     auction = models.BooleanField('merch', help_text= 'Уместен ли торг')
-    created = models.DateField(auto_now_add= True)
-    update = models.DateField(auto_now= True)
+    created = models.DateTimeField(auto_now_add=True)
+    update = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE) # если User буджет удален то все обьявления связанные с ним тоже будут удалены
     image = models.ImageField("изображения", upload_to='advertisements/')
 
-    # def __str__(self) -> str:
-    #     return f'Advertisement(id = {self.id}, title = {self.title}, prices = {self.prices})'
-
-
+    def get_absolute_url(self):
+        # post_adv/<int:pk>/
+        # post_adv/self.pk/
+        return reverse("post_adv_detail", kwargs={"pk": self.pk})# pk тоже самое что и id в модели
 
 
     #метод если запись была создана сегодня то мы отобразим ее зеленым цветом, если не сегодня , то серым
     @admin.display(description='дата создания')
     def created_date(self):
-        if self.created == timezone.now().date():#проверяю что запись была создана сегодня
-            created_time =  self.created.strftime('%H:%M:%S') # 19:30:15
+        if self.created.date() == timezone.now().date():#проверяю что запись была создана сегодня
+            created_time =  self.created.time().strftime('%H:%M:%S') # 19:30:15
             return format_html(
                 "<span style='color:green; font-weight: bold'>Сегодня в {}</span>",
                 created_time
@@ -63,8 +60,8 @@ class Advertisement(models.Model):
 
     @admin.display(description='дата обновления')
     def update_date(self):
-        if self.update == timezone.now().date():#проверяю что запись была создана сегодня
-            update_time =  self.update.strftime('%H:%M:%S') # 19:30:15
+        if self.update.date() == timezone.now().date():#проверяю что запись была создана сегодня
+            update_time =  self.update.time().strftime('%H:%M:%S') # 19:30:15
             return format_html(
                 "<span style='color:green; font-weight: bold'>Сегодня в {}</span>",
                 update_time
@@ -88,9 +85,11 @@ class Advertisement(models.Model):
 
     # представление в виде строки 
     def __str__(self) -> str:
-        return f"Advertisement(id={self.id}, title={self.title}, price={self.prices})"
+        return f"Advertisement(id={self.id}, title={self.title}, price={self.prices}, created={self.created}, updated={self.update})"
+    
+    
 
-    #работы с самой таблицей
+    #работы с самой таблице
 
 
     class Meta:
