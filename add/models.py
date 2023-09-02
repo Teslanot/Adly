@@ -34,8 +34,8 @@ class Advertisement(models.Model):
     descriptions = models.TextField('описание')
     prices = models.DecimalField(' цена' , max_digits= 10 , decimal_places = 2)
     auction = models.BooleanField('merch', help_text= 'Уместен ли торг')
-    created = models.DateTimeField(auto_now_add=True)
-    update = models.DateTimeField(auto_now=True)
+    created = models.DateField(auto_now_add=True)
+    update = models.DateField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE) # если User буджет удален то все обьявления связанные с ним тоже будут удалены
     image = models.ImageField("изображения", upload_to='advertisements/')
 
@@ -48,8 +48,8 @@ class Advertisement(models.Model):
     #метод если запись была создана сегодня то мы отобразим ее зеленым цветом, если не сегодня , то серым
     @admin.display(description='дата создания')
     def created_date(self):
-        if self.created.date() == timezone.now().date():#проверяю что запись была создана сегодня
-            created_time =  self.created.time().strftime('%H:%M:%S') # 19:30:15
+        if self.created == timezone.now().date():#проверяю что запись была создана сегодня
+            created_time =  self.created.strftime('%d.%m.%Y at %H:%M:%S') # 19:30:15
             return format_html(
                 "<span style='color:green; font-weight: bold'>Сегодня в {}</span>",
                 created_time
@@ -60,8 +60,8 @@ class Advertisement(models.Model):
 
     @admin.display(description='дата обновления')
     def update_date(self):
-        if self.update.date() == timezone.now().date():#проверяю что запись была создана сегодня
-            update_time =  self.update.time().strftime('%H:%M:%S') # 19:30:15
+        if self.update == timezone.now().date():#проверяю что запись была создана сегодня
+            update_time =  self.update.strftime('%d.%m.%Y at %H:%M:%S') # 19:30:15
             return format_html(
                 "<span style='color:green; font-weight: bold'>Сегодня в {}</span>",
                 update_time

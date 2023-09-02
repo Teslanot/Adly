@@ -2,8 +2,8 @@ from django.urls import path
 
 # импортирую свои представления
 
-from .views import home, test, test2, top_sellers, post_adv,post_adv_detail
-#  маршрутизатор приложения adv_filternovinki
+from .views import home, test, test2, top_sellers, post_adv,post_adv_detail, novinki
+#  маршрутизатор приложения adv_filter
 
 
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path("post_adv/<int:pk>", post_adv_detail, name='post_adv_detail'),
     path("test/", test, name = 'test'), 
     path("test2/", test2, name = 'test2'), 
-    # path("novinki/", novinki, name = 'novinki'), 
+    path("novinki/", novinki, name = 'novinki'), 
     # path("adv_filter/<int:pk>", adv_filter, name='adv_filter'),
 ]       
 

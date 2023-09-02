@@ -8,7 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.handlers.wsgi import WSGIRequest
 from django.contrib.auth.decorators import login_required # если пользователь не авторизован перенаправляем его
 from django.urls import reverse_lazy # как reverse но только ленивая функция
-from datetime import datetime , timedelta
+from datetime import datetime,date , timedelta
 from django.utils import timezone
 
 
@@ -23,15 +23,29 @@ User = get_user_model()
 def home(request: WSGIRequest):
     title = request.GET.get('query')
     if title: # если пользователь что-то ищет
-        datab = Advertisement.objects.filter(title__icontains = title) # SELECT * FROM Advertisement WHERE title = title
+        data = Advertisement.objects.filter(title__icontains = title) # SELECT * FROM Advertisement WHERE title = title
     else: # если ничего не ищет(просто все обьявления)
-        datab = Advertisement.objects.all() # беру все записи из БД
+        data = Advertisement.objects.all() # беру все записи из БД
 
 
-    context = {'advertisements' : datab, 'title': title} # словарь
+    context = {'advertisements' : data, 'title': title} # словарь
     return render(request, 'index.html', context)
 
 
+def novinki(request:WSGIRequest):
+    adv_all= Advertisement.objects.all()
+    now = datetime.now() 
+    adv_new = now - timedelta(days = 7)
+    adv_filter = adv_all.filter(created__gte = adv_new)
+
+
+    title = request.GET.get('query')
+    if title: # если пользователь что-то ищет
+        adv_filter = Advertisement.objects.filter(created__gte = adv_new, title__icontains = title) # SELECT * FROM Advertisement WHERE title = title
+    else: # если ничего не ищет(просто все обьявления)
+        adv_filter = adv_all.filter(created__gte = adv_new)
+    context = {'advertisements' : adv_filter, 'title': title}
+    return render(request, 'novinki.html', context)
 
 
 def top_sellers(request):
@@ -95,25 +109,3 @@ def test2(request):
 
 
 
-# def novinki(request:WSGIRequest):
-#     title = request.GET.get('query')
-#     if title: # если пользователь что-то ищет
-#         data = Advertisement.objects.filter(title__icontains = title) # SELECT * FROM Advertisement WHERE title = title
-#     else: # если ничего не ищет(просто все обьявления)
-#         data = Advertisement.objects.all() # беру все записи из БД
-#     context = {'advertisements' : data, 'title': title}
-#     return render(request, 'novinki.html', context)
-
-
-# def adv_filter(request,pk):
-#     adv_filter = Advertisement.objects.all()
-#     if pk == 1:
-#         now =  datetime.now() - timedelta(minutes= 60*24*7)
-#         adv_filter = adv_filter.filter(created__gte=now)
-#         adv_filter = adv_filter
-#     elif pk == 2:
-#         now =  datetime.now() - timedelta(minutes= 60*24*30)
-#         adv_filter = adv_filter.filter(created__gte=now)
-#     elif pk == 3:
-#         adv_filter = adv_filter
-#     return render(request, 'novinki.html', {'adv_filter':adv_filter})
