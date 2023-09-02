@@ -37,6 +37,7 @@ def novinki(request:WSGIRequest):
     now = datetime.now() 
     adv_new = now - timedelta(days = 7)
     adv_filter = adv_all.filter(created__gte = adv_new)
+    adv_filter = adv_all.filter(created__gte = now)
 
 
     title = request.GET.get('query')
@@ -47,6 +48,12 @@ def novinki(request:WSGIRequest):
     context = {'advertisements' : adv_filter, 'title': title}
     return render(request, 'novinki.html', context)
 
+def novinki_den(request:WSGIRequest):
+    adv_all= Advertisement.objects.all()
+    now = datetime.now() 
+    adv_filter = adv_all.filter(created__gte = now)
+    context = {'advertisements' : adv_filter}
+    return render(request, 'novinki_den.html', context)
 
 def top_sellers(request):
     users = User.objects.annotate(

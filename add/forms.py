@@ -42,7 +42,7 @@ class AdvertisementForm(forms.Form):
     auction     = forms.BooleanField(required=False, widget=forms.CheckboxInput(
         {"class": "form-check-input"}
     )) # поле необязательное
-    image       = forms.ImageField(widget=forms.FileInput(
+    image       = forms.ImageField(required= False, widget=forms.FileInput(
         {"class": "form-control-lg"}
     ))
 

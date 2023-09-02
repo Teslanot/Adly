@@ -2,9 +2,9 @@ from django.urls import path
 
 # импортирую свои представления
 
-from .views import home, test, test2, top_sellers, post_adv,post_adv_detail, novinki
-#  маршрутизатор приложения adv_filter
+from .views import home, test, test2, top_sellers, post_adv,post_adv_detail, novinki, novinki_den
 
+#  маршрутизатор приложения 
 
 
 
@@ -16,7 +16,7 @@ urlpatterns = [
     path("test/", test, name = 'test'), 
     path("test2/", test2, name = 'test2'), 
     path("novinki/", novinki, name = 'novinki'), 
-    # path("adv_filter/<int:pk>", adv_filter, name='adv_filter'),
+    path("novinki_za_den", novinki_den, name='novinki_za_den'), 
 ]       
 
 
