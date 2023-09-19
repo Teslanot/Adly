@@ -40,6 +40,7 @@ class Advertisement(models.Model):
     update = models.DateField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE) # если User буджет удален то все обьявления связанные с ним тоже будут удалены
     image = models.ImageField("изображения", upload_to='advertisements/')
+    favorites = models.ManyToManyField(User, related_name='favorite_adv')
 
     def get_absolute_url(self):
         # post_adv/<int:pk>/

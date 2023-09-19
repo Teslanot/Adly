@@ -68,8 +68,10 @@ def top_sellers(request):
 @login_required
 def add_to_favorites(request, pk):
     adv = get_object_or_404(Advertisement, id=pk)
-    favorite, created = Favorite.objects.get_or_create(user=request.user, adv = adv)
-    return redirect(reverse('post_adv_detail', kwargs={'pk': pk}))
+    if request.method == 'POST':
+        adv.favorites.add(request.user)
+    context = {"adv" : adv}
+    return render(request, 'favorite.html', context)
     # if created:
     #     messages.success(request, "Вы добавили объявление в избранное")
     #     # the ad was not in the user's favorites before
@@ -82,10 +84,10 @@ def add_to_favorites(request, pk):
 @login_required
 def remove_from_favorite(request, pk):
     adv = get_object_or_404(Advertisement, id=pk)
-    favorite = Favorite.objects.filter(user=request.user, adv = adv).first()
-    if favorite:
-        favorite.delete()
-    return redirect(reverse('post_adv_detail', kwargs={'pk': pk}))
+    if request.method == 'POST':
+        adv.favorites.clear()
+    context = {"adv" : adv}
+    return render(request, 'favorite.html', context)
 
 def post_adv_detail(request: WSGIRequest, pk):
     # post_adv/<int:pk>/

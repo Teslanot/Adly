@@ -141,6 +141,17 @@
             <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
             <span>Цена: {{adv.prices}}</span>
           </a>
+          {% if user in adv.favorites.all %}
+          <form action="{% url 'remove_from_favorite' adv.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Удалить из избранного</button>
+          </form>
+          {% else %}
+          <form action="{% url 'add_to_favorites' adv.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Добавить в избранное</button>
+          </form>
+          {% endif %}
         </div>
       </div>
     </div>

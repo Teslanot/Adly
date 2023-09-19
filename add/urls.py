@@ -17,8 +17,8 @@ urlpatterns = [
     path("test2/", test2, name = 'test2'), 
     path("novinki/", novinki, name = 'novinki'), 
     path("novinki_za_den", novinki_den, name='novinki_za_den'), 
-    path("favorites/add/<int:id>", add_to_favorites, name='add_to_favorites'),
-    path("favorites/remove/<int:id>", remove_from_favorite, name='remove_from_favorite'),
+    path("favorites/add/<int:pk>", add_to_favorites, name='add_to_favorites'),
+    path("favorites/remove/<int:pk>", remove_from_favorite, name='remove_from_favorite'),
 ]       
 
 
