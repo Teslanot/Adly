@@ -66,19 +66,26 @@ def top_sellers(request):
 
 
 @login_required
-def add_to_favorites(request:WSGIRequest , pk):
+def add_to_favorites(request, pk):
     adv = get_object_or_404(Advertisement, id=pk)
     favorite, created = Favorite.objects.get_or_create(user=request.user, adv = adv)
-    if created:
-        messages.success(request, "Вы добавили объявление в избранное")
-        # the ad was not in the user's favorites before
-        # do something, e.g. send a message or redirect to a page
-    else:
-        messages.error(request, "Это объявление уже в вашем избранном")
-        # the ad was already in the user's favorites
-        # do something else, e.g. show an error or redirect to another page
+    return redirect(reverse('post_adv_detail', kwargs={'pk': pk}))
+    # if created:
+    #     messages.success(request, "Вы добавили объявление в избранное")
+    #     # the ad was not in the user's favorites before
+    #     # do something, e.g. send a message or redirect to a page
+    # else:
+    #     messages.error(request, "Это объявление уже в вашем избранном")
+    #     # the ad was already in the user's favorites
+    #     # do something else, e.g. show an error or redirect to another page
 
-
+@login_required
+def remove_from_favorite(request, pk):
+    adv = get_object_or_404(Advertisement, id=pk)
+    favorite = Favorite.objects.filter(user=request.user, adv = adv).first()
+    if favorite:
+        favorite.delete()
+    return redirect(reverse('post_adv_detail', kwargs={'pk': pk}))
 
 def post_adv_detail(request: WSGIRequest, pk):
     # post_adv/<int:pk>/
@@ -103,7 +110,7 @@ def post_adv(request: WSGIRequest):
         if form.is_valid(): # True/False  проверяю правильность
             # print(request.POST['title'])
             print(form.cleaned_data) # отдает словарь со всеми данными
-            adv = Advertisement(**form.cleaned_data) # распаковка словаря
+            adv = Advertisement(**form.cleaned_data)# распаковка словар
             adv.user = request.user # отдельно указал пользователя 
             adv.save()  # сохраняю запись
             return redirect(
@@ -111,7 +118,9 @@ def post_adv(request: WSGIRequest):
             )
 
         else: # если неправильно
-            print(form.errors) # вывожу эту ошибку
+            print(form.errors) # вывожу эту ошибку\
+
+
 
 
     else: # GET или другие

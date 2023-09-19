@@ -103,6 +103,8 @@ class Favorite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     adv_fav = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.user.username} - {self.adv_fav.title}"
 
 #         from app_advertisements.models import Advertisements                                
 #         adv1 = Advertisements (title = 'Молоко', descriptoin = 'Свежее молоко', price = 100, auction = True)   # создаю запись                           

@@ -2,7 +2,7 @@ from django.urls import path
 
 # импортирую свои представления
 
-from .views import home, test, test2, top_sellers, post_adv,post_adv_detail, novinki, novinki_den
+from .views import home, test, test2, top_sellers, post_adv,post_adv_detail, novinki, novinki_den,add_to_favorites
 
 #  маршрутизатор приложения 
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path("test2/", test2, name = 'test2'), 
     path("novinki/", novinki, name = 'novinki'), 
     path("novinki_za_den", novinki_den, name='novinki_za_den'), 
+    path("add_to_fav/<int:id>", add_to_favorites, name='add_to_favorites'),
 ]       
 
 
