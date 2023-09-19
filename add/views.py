@@ -1,6 +1,6 @@
-from django.shortcuts import render,redirect # для того чтобы отдавать html
+from django.shortcuts import render,redirect, get_object_or_404 # для того чтобы отдавать html
 from django.urls import reverse #получение ссылки по названию в urls
-from .models import Advertisement
+from .models import Advertisement, Favorite
 # from .forms import AdverisementForm
 from .forms import AdvertisementForm
 from django.db.models import Count
@@ -8,8 +8,8 @@ from django.contrib.auth import get_user_model
 from django.core.handlers.wsgi import WSGIRequest
 from django.contrib.auth.decorators import login_required # если пользователь не авторизован перенаправляем его
 from django.urls import reverse_lazy # как reverse но только ленивая функция
-from datetime import datetime,date , timedelta
-from django.utils import timezone
+from datetime import datetime, timedelta
+from django.contrib import messages
 
 
 
@@ -63,6 +63,20 @@ def top_sellers(request):
     context = {"users" : users}
     return render(request, 'top-sellers.html', context)
 
+
+
+@login_required
+def add_to_favorites(request:WSGIRequest , pk):
+    adv = get_object_or_404(Advertisement, id=pk)
+    favorite, created = Favorite.objects.get_or_create(user=request.user, adv = adv)
+    if created:
+        messages.success(request, "Вы добавили объявление в избранное")
+        # the ad was not in the user's favorites before
+        # do something, e.g. send a message or redirect to a page
+    else:
+        messages.error(request, "Это объявление уже в вашем избранном")
+        # the ad was already in the user's favorites
+        # do something else, e.g. show an error or redirect to another page
 
 
 

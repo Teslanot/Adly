@@ -29,6 +29,8 @@ from django.urls import reverse
 
 # заголовок - описание - цена - дата создания - дата обновления - тогр
 User = get_user_model()
+
+
 class Advertisement(models.Model):
     title = models.CharField("Заголовок",max_length= 128)#validators=[RegexValidator('[?+-/%]', inverse_match=True)]
     descriptions = models.TextField('описание')
@@ -97,6 +99,9 @@ class Advertisement(models.Model):
 
 
 
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    adv_fav = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
 
 
 #         from app_advertisements.models import Advertisements                                
