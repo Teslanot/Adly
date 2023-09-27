@@ -89,6 +89,19 @@ def remove_from_favorite(request, pk):
     context = {"adv" : adv}
     return render(request, 'favorite.html', context)
 
+
+def favorit_list(request):
+    adv = Advertisement.objects.all()
+    people_by_age2 = Advertisement.objects.exclude(favorites= False)
+
+    context = {'favorite_list': people_by_age2}
+    return render(request, 'all-fav.html', context)
+
+
+
+
+
+
 def post_adv_detail(request: WSGIRequest, pk):
     # post_adv/<int:pk>/
     # http://127.0.0.1:8000/post_adv/1/

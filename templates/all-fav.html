@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %} Избранное{% endblock %}
+
+{% block content %}
+  <footer style="padding: 50px;" class="bg-primary">
+    <nav class="navbar navbar-expand-sm navbar-dark">
+      <a class="navbar-brand" href="../post_adv">Добавьте сюда что хотите</a>
+      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
+        data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
+        aria-label="Toggle navigation"></button>
+    </nav>
+  </footer>
+<!--указать блок -->
+<ul class="nav nav-pills sticky-top bg-white nav-fill">
+  <li class="nav-item">
+    <a class="nav-link active" href="{% url 'home' %}">
+      <span style="font-weight: bold;">Главная</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'top_sellers' %}">
+      <span style="font-weight: bold;">Топ продавцов</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'post_adv' %}">
+      <span style="font-weight: bold;">Разместить объявление</span>
+    </a>
+  </li>
+
+
+  <!-- если пользователь не авторизован -->
+  {% if not user.is_authenticated %}
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'sign_in' %}">
+      <span style="font-weight: bold;">Регистрация</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'login' %}">
+      <span style="font-weight: bold;">Войти</span>
+    </a>
+  </li>
+  {% else %}
+  <li class="nav-item">
+    <a class="nav-link" aria-current="page" href="{% url 'profile' %}">
+      <span style="font-weight: bold;">Профиль</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'logout' %}">
+      <span style="font-weight: bold;">Выйти</span>
+    </a>
+  </li>
+  {% endif %}
+</ul>
+  <ul class="nav nav-tabs bg-white">
+    <li class="nav-item">
+      <a class="nav-link" aria-current="page" href="../../">Проверенные продавцы</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/novinki">Новинки за неделю</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/novinki_za_den">Новинки за день</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Избранное</a>
+    </li>
+  </ul>
+
+<div class="col">
+  {%for adv in favorite_list%}
+  <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <a href="{{ adv.get_absolute_url }}" class="nav-link">
+          {% if adv.image %}  <!-- проверяю что есть картинка -->
+            <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card title">
+          {% endif %}
+          
+        </a>
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">
+            <a href="{{ adv.get_absolute_url }}" class="nav-link"><strong>{{adv.title}}</strong></a>
+          </h5>
+          <a href="{{ adv.get_absolute_url }}" class="nav-link">
+            <p class="card-text">
+              {{adv.descriptions}}
+            </p>
+            <span>Автор: {{adv.user}}</span>
+            <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
+            <span>Цена: {{adv.prices}}</span>
+          </a>
+          {% if user in adv.favorites.all %}
+          <form action="{% url 'remove_from_favorite' adv.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Удалить из избранного</button>
+          </form>
+          {% else %}
+          <form action="{% url 'add_to_favorites' adv.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Добавить в избранное</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+
+
+
+
+{% endblock %}
