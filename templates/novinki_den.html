@@ -55,11 +55,7 @@
       <a class="nav-link" href="{% url 'top_sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
       </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" href="{% url 'post_adv' %}">
-        <span style="font-weight: bold;">Разместить объявление</span>
-      </a>
-    </li>
+
     <!-- если пользователь не авторизован -->
     {% if not user.is_authenticated %}
     <li class="nav-item">
@@ -73,6 +69,11 @@
       </a>
     </li>
     {% else %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'post_adv' %}">
+        <span style="font-weight: bold;">Разместить объявление</span>
+      </a>
+    </li>
     <li class="nav-item">
       <a class="nav-link " aria-current="page" href="{% url 'profile' %}">
         <span style="font-weight: bold;">Профиль</span>

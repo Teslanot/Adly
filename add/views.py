@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect, get_object_or_404 # для того чтобы отдавать html
 from django.urls import reverse #получение ссылки по названию в urls
-from .models import Advertisement, Favorite
+from .models import Advertisement
 # from .forms import AdverisementForm
 from .forms import AdvertisementForm
 from django.db.models import Count
@@ -91,10 +91,12 @@ def remove_from_favorite(request, pk):
 
 
 def favorit_list(request):
-    adv = Advertisement.objects.all()
-    people_by_age2 = Advertisement.objects.exclude(favorites= False)
+    adv= Advertisement.objects.all()
+    # adv = get_object_or_404(Advertisement, id=pk)
+    # adv_filter = adv.filter(adv.favorites == True)
+    favorit_list_1 = Advertisement.objects.exclude(favorites= False)
 
-    context = {'favorite_list': people_by_age2}
+    context = {'favorite_list': favorit_list_1}
     return render(request, 'all-fav.html', context)
 
 
