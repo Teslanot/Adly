@@ -19,7 +19,7 @@
     </a>
   </li>
 
-  <!-- если пользователь не авторизован -->
+  <!-- если пользователь не авторизован col -->
   {% if not user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'sign_in' %}">
@@ -112,8 +112,8 @@
 
 
   </div>
-  <div class="col">
-
+  <!-- <div class="col"> -->
+  <div class="col" style="display: flex; flex-direction: column-reverse;">
     
    
 

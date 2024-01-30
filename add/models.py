@@ -52,24 +52,24 @@ class Advertisement(models.Model):
     @admin.display(description='дата создания')
     def created_date(self):
         if self.created == timezone.now().date():#проверяю что запись была создана сегодня
-            created_time =  self.created.strftime('%d.%m.%Y at %H:%M:%S') # 19:30:15
+            created_time =  self.created.strftime('%d.%m.%Y') # 19:30:15 at %H:%M:%S
             return format_html(
-                "<span style='color:green; font-weight: bold'>Сегодня в {}</span>",
+                "<span style='color:green; font-weight: bold'>Сегодня {}</span>",
                 created_time
             )
-        return self.created.strftime('%d.%m.%Y at %H:%M:%S') # 04.08.2023 at 19:30:15
+        return self.created.strftime('%d.%m.%Y') # 04.08.2023 at 19:30:15 at %H:%M:%S
 
 
 
     @admin.display(description='дата обновления')
     def update_date(self):
         if self.update == timezone.now().date():#проверяю что запись была создана сегодня
-            update_time =  self.update.strftime('%d.%m.%Y at %H:%M:%S') # 19:30:15
+            update_time =  self.update.strftime('%d.%m.%Y') # 19:30:15 at %H:%M:%S
             return format_html(
-                "<span style='color:green; font-weight: bold'>Сегодня в {}</span>",
+                "<span style='color:green; font-weight: bold'>Сегодня {}</span>",
                 update_time
             )
-        return self.update.strftime('%d.%m.%Y at %H:%M:%S') # 04.08.2023 at 19:30:15
+        return self.update.strftime('%d.%m.%Y') # 04.08.2023 at 19:30:15 at %H:%M:%S
 
     @admin.display(description='фото')
     def photo(self):
