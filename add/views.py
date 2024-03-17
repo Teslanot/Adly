@@ -89,14 +89,11 @@ def remove_from_favorite(request, pk):
     context = {"adv" : adv}
     return render(request, 'favorite.html', context)
 
-
-def favorit_list(request):
-    adv= Advertisement.objects.all()
-    # adv = get_object_or_404(Advertisement, id=pk)
-    # adv_filter = adv.filter(adv.favorites == True)
-    favorit_list_1 = Advertisement.objects.exclude(favorites= False)
-
-    context = {'favorite_list': favorit_list_1}
+@login_required
+def favorit_list(request):  
+    user = request.user
+    favorites = user.favorite_adv.all() # Получаем все объявления, которые у пользователя в избранном
+    context = {"favorite_list": favorites}
     return render(request, 'all-fav.html', context)
 
 
@@ -108,7 +105,8 @@ def post_adv_detail(request: WSGIRequest, pk):
     # post_adv/<int:pk>/
     # http://127.0.0.1:8000/post_adv/1/
     # pk = 1
-    adv = Advertisement.objects.get(id = pk) # ищу запись по id
+    adv = Advertisement.objects.get(id = pk) # ищу запись по id 
+    # adv = Advertisement.objects.exclude(favorites= None)
     context = {"adv" : adv}
     return render(request, 'advertisement.html', context)
 
