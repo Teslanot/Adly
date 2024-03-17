@@ -19,7 +19,7 @@
     </a>
   </li>
 
-  <!-- если пользователь не авторизован col -->
+  <!-- если пользователь не авторизован -->
   {% if not user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'sign_in' %}">
@@ -153,7 +153,7 @@
             {% else %}
             <form action="{% url 'add_to_favorites' adv.id %}" method="post">
               {% csrf_token %}
-              <button type="submit" class="fav_button_on">Добавить в избранное</button>
+              <button type="submit" class="fav_button_on" data-url="">Добавить в избранное</button>
             </form>
             {% endif %}
           </div>

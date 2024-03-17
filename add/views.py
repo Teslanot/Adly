@@ -9,7 +9,9 @@ from django.core.handlers.wsgi import WSGIRequest
 from django.contrib.auth.decorators import login_required # если пользователь не авторизован перенаправляем его
 from django.urls import reverse_lazy # как reverse но только ленивая функция
 from datetime import datetime, timedelta
-from django.contrib import messages
+# from django.contrib import messages
+import json
+from django.http import JsonResponse
 
 
 
@@ -67,27 +69,25 @@ def top_sellers(request):
 
 @login_required
 def add_to_favorites(request, pk):
-    adv = get_object_or_404(Advertisement, id=pk)
+    adv = get_object_or_404(Advertisement, id=pk)   
     if request.method == 'POST':
         adv.favorites.add(request.user)
-    context = {"adv" : adv}
-    return render(request, 'favorite.html', context)
-    # if created:
-    #     messages.success(request, "Вы добавили объявление в избранное")
-    #     # the ad was not in the user's favorites before
-    #     # do something, e.g. send a message or redirect to a page
-    # else:
-    #     messages.error(request, "Это объявление уже в вашем избранном")
-    #     # the ad was already in the user's favorites
-    #     # do something else, e.g. show an error or redirect to another page
+        # Возвращаем JSON-ответ с HTML-кодом кнопки
+        response = {'button_html': '<button type="submit" class="fav_button_del">Удалить из избранного</button>'}
+        return JsonResponse(response)
+    # context = {"adv" : adv}
+    # return render(request, 'favorite.html', context)
 
 @login_required
 def remove_from_favorite(request, pk):
     adv = get_object_or_404(Advertisement, id=pk)
     if request.method == 'POST':
         adv.favorites.clear()
-    context = {"adv" : adv}
-    return render(request, 'favorite.html', context)
+        # Возвращаем JSON-ответ с HTML-кодом кнопки
+        response = {'button_html': '<button type="submit" class="fav_button_on">Добавить в избранное</button>'}
+        return JsonResponse(response)
+    # context = {"adv" : adv}
+    # return render(request, 'favorite.html', context)
 
 @login_required
 def favorit_list(request):  

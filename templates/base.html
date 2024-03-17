@@ -36,6 +36,30 @@
 
 {% block scripts %}
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script>
+  $(document).ready(function() {
+    $('.fav_button_on, .fav_button_del').click(function(e) {
+        e.preventDefault();
+        var form = $(this).closest('form');
+        var url = form.attr('action');
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: form.serialize(),
+            success: function(response) {
+                // Обновляем только кнопку, если запрос успешен
+                var button = form.find('button');
+                button.replaceWith(response.button_html);
+            },
+            error: function(xhr, status, error) {
+                // Обрабатываем ошибку, если что-то пошло не так
+                console.log(error);
+            }
+        });
+    });
+});
+</script>
 {% endblock %}
 </body>
 
