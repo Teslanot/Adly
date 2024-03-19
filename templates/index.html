@@ -92,9 +92,6 @@
       <li class="nav-item">
         <a class="nav-link" href="/favorites">Избранное</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Еще что-нибудь</a>
-      </li>
     </ul>
 
 
@@ -166,35 +163,16 @@
 
   </div>
 </div>
-<footer style="padding: 100px;" class="bg-primary">
-  <nav class="navbar navbar-expand-sm navbar-dark">
-    <a class="navbar-brand" href="#">Добавьте</a>
-    <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
-            data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
-            aria-label="Toggle navigation"></button>
-    <div class="collapse navbar-collapse" id="collapsibleNavId">
-      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" href="#" aria-current="page">сюда<span
-                  class="visually-hidden">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">что</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true"
-             aria-expanded="false">хотите</a>
-          <div class="dropdown-menu" aria-labelledby="dropdownId">
-            <a class="dropdown-item" href="#">например</a>
-            <a class="dropdown-item" href="#">ссылки на социальные сети</a>
-          </div>
-        </li>
-      </ul>
-      <form class="d-flex my-2 my-lg-0">
-        <input class="form-control me-sm-2" type="text" placeholder="Search">
-        <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
-      </form>
+<footer style="padding:25px;" class="bg-primary">
+  <div style="display: flex; justify-content: space-around;">
+    <div style="display:flex; align-items: center; padding-top: 15px;" >
+      <p style="font-size: large; color: rgb(255, 255, 255); margin-right: 10px;" >Сайт был создан вместе с командой Maximum Education</p>
+      <p style="font-size: large; color: rgb(255, 255, 255); margin-left: 10px;">А также человеком именем Dan</p>
     </div>
-  </nav>
+    <div style="width: 225px; display: flex; justify-content: space-between;">
+      <a href="https://github.com/Teslanot"><img src="/static/img/github_img.png" alt="GitHub" style="width: 50px; height:50px;"></a>
+      <a href="https://education.maximumtest.ru"><img src="/static/img/Maximum_Education.png" alt="Maximum Education" style="width: 125px; height:50px;"></a>
+    </div>
+  </div>
 </footer>
 {% endblock %}

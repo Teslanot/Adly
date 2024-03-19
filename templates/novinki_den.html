@@ -8,43 +8,6 @@
 
 
 {% block content %}
-
-<footer style="padding: 25px;" class="bg-primary">
-    <nav class="navbar navbar-expand-sm navbar-dark">
-      <a class="navbar-brand" href="#">Добавьте</a>
-      <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapsibleNavId" aria-controls="collapsibleNavId" aria-expanded="false"
-              aria-label="Toggle navigation"></button>
-      <div class="collapse navbar-collapse" id="collapsibleNavId">
-        <ul class="navbar-nav me-auto mt-2 mt-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" href="#" aria-current="page">сюда<span
-                    class="visually-hidden">(current)</span></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">что</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown" aria-haspopup="true"
-               aria-expanded="false">хотите</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownId">
-              <a class="dropdown-item" href="#">например</a>
-              <a class="dropdown-item" href="https://www.youtube.com/">Youtube</a>
-            </div>
-          </li>
-        </ul>
-        <form class="row g-3" method="get">
-          <div class="col-md-8">
-            <input type="text" class="form-control" name='query' value="{% if title %}{{title}}{% endif %}">
-            <!-- если есть title то соатвляю его в строке  -->
-          </div>
-          <div class="col-auto ">
-            <button type="submit" class="btn btn-success mb-3">Найти</button>
-          </div>
-        </form>
-      </div>
-    </nav>
-</footer>
 <ul class="nav nav-pills sticky-top bg-white nav-fill">
     <li class="nav-item">
       <a class="nav-link active" href="{% url 'home' %}">
@@ -99,10 +62,10 @@
           <a class="nav-link" href="../novinki">Новинки за неделю</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link active" href="#">Новинки за день</a>
+          <a class="nav-link active" href="#">Новинки за день</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Избранное</a>
+          <a class="nav-link" href="/favorites">Избранное</a>
         </li>
       </ul>
     </div>
@@ -160,6 +123,18 @@
 {% endfor %}
   <!-- конец обьявления -->
 </div>
+<footer style="padding:25px;" class="bg-primary">
+  <div style="display: flex; justify-content: space-around;">
+    <div style="display:flex; align-items: center; padding-top: 15px;" >
+      <p style="font-size: large; color: rgb(255, 255, 255); margin-right: 10px;" >Сайт был создан вместе с командой Maximum Education</p>
+      <p style="font-size: large; color: rgb(255, 255, 255); margin-left: 10px;">А также человеком именем Dan</p>
+    </div>
+    <div style="width: 225px; display: flex; justify-content: space-between;">
+      <a href="https://github.com/Teslanot"><img src="/static/img/github_img.png" alt="GitHub" style="width: 50px; height:50px;"></a>
+      <a href="https://education.maximumtest.ru"><img src="/static/img/Maximum_Education.png" alt="Maximum Education" style="width: 125px; height:50px;"></a>
+    </div>
+  </div>
+</footer>
 
 
 
