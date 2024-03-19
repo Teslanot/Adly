@@ -33,13 +33,13 @@ User = get_user_model()
 
 class Advertisement(models.Model):
     title = models.CharField("Заголовок",max_length= 128)#validators=[RegexValidator('[?+-/%]', inverse_match=True)]
-    descriptions = models.TextField('описание')
-    prices = models.DecimalField(' цена' , max_digits= 10 , decimal_places = 2)
-    auction = models.BooleanField('merch', help_text= 'Уместен ли торг')
+    descriptions = models.TextField('Описание')
+    prices = models.DecimalField(' Цена' , max_digits= 10 , decimal_places = 2)
+    auction = models.BooleanField('Торг', help_text= 'Уместен ли торг')
     created = models.DateField(auto_now_add=True)
     update = models.DateField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE) # если User буджет удален то все обьявления связанные с ним тоже будут удалены
-    image = models.ImageField("изображения", upload_to='advertisements/')
+    image = models.ImageField("Изображения", upload_to='advertisements/')
     favorites = models.ManyToManyField(User, related_name='favorite_adv')
 
     def get_absolute_url(self):
@@ -49,7 +49,7 @@ class Advertisement(models.Model):
 
 
     #метод если запись была создана сегодня то мы отобразим ее зеленым цветом, если не сегодня , то серым
-    @admin.display(description='дата создания')
+    @admin.display(description='Дата создания')
     def created_date(self):
         if self.created == timezone.now().date():#проверяю что запись была создана сегодня
             created_time =  self.created.strftime('%d.%m.%Y') # 19:30:15 at %H:%M:%S
@@ -61,7 +61,7 @@ class Advertisement(models.Model):
 
 
 
-    @admin.display(description='дата обновления')
+    @admin.display(description='Дата обновления')
     def update_date(self):
         if self.update == timezone.now().date():#проверяю что запись была создана сегодня
             update_time =  self.update.strftime('%d.%m.%Y') # 19:30:15 at %H:%M:%S
@@ -71,7 +71,7 @@ class Advertisement(models.Model):
             )
         return self.update.strftime('%d.%m.%Y') # 04.08.2023 at 19:30:15 at %H:%M:%S
 
-    @admin.display(description='фото')
+    @admin.display(description='Фото')
     def photo(self):
         if self.image:#проверяю что есть картинка
            
@@ -100,12 +100,7 @@ class Advertisement(models.Model):
 
 
 
-class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    adv_fav = models.ForeignKey(Advertisement, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"{self.user.username} - {self.adv_fav.title}"
 
 #         from app_advertisements.models import Advertisements                                
 #         adv1 = Advertisements (title = 'Молоко', descriptoin = 'Свежее молоко', price = 100, auction = True)   # создаю запись                           

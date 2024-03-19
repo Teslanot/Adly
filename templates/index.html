@@ -99,7 +99,7 @@
     <form class="row g-3" method="get">
       <div class="col-auto w-50">
         <input type="text" class="form-control" name='query' value="{% if title %}{{title}}{% endif %}">
-        <!-- если есть title то соатвляю его в строке  -->
+        <!-- если есть title то оставляю его в строке  -->
       </div>
       <div class="col-auto">
         <button type="submit" class="btn btn-success mb-3">Найти</button>
@@ -109,12 +109,7 @@
 
 
   </div>
-  <!-- <div class="col"> -->
   <div class="col" style="display: flex; flex-direction: column-reverse;">
-    
-   
-
-
     <!-- начало моего обьявления -->
     {%for adv in advertisements%}
     <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
@@ -122,9 +117,9 @@
         <div class="col-md-4">
           <a href="{{ adv.get_absolute_url }}" class="nav-link">
             {% if adv.image %}  <!-- проверяю что есть картинка -->
-              <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card title">
+              <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card image">
             {% else %}  <!-- иначе -->
-              <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
+              <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card image">
             {% endif %}
             
           </a>
@@ -142,7 +137,7 @@
               <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
               <span>Цена: {{adv.prices}}</span>
             </a>
-            {% if user in adv.favorites.all %}
+            {% if user in adv.favorites.all %} <!-- проверяю если избранное объявление привязано к пользователю-->
             <form action="{% url 'remove_from_favorite' adv.id %}" method="post">
               {% csrf_token %}
               <button type="submit" class="fav_button_del">Удалить из избранного</button>
@@ -150,7 +145,7 @@
             {% else %}
             <form action="{% url 'add_to_favorites' adv.id %}" method="post">
               {% csrf_token %}
-              <button type="submit" class="fav_button_on" data-url="">Добавить в избранное</button>
+              <button type="submit" class="fav_button_on" >Добавить в избранное</button>
             </form>
             {% endif %}
           </div>

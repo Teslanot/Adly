@@ -10,7 +10,6 @@ from django.contrib.auth.decorators import login_required # если польз�
 from django.urls import reverse_lazy # как reverse но только ленивая функция
 from datetime import datetime, timedelta
 # from django.contrib import messages
-import json
 from django.http import JsonResponse
 
 
@@ -71,7 +70,7 @@ def top_sellers(request):
 def add_to_favorites(request, pk):
     adv = get_object_or_404(Advertisement, id=pk)   
     if request.method == 'POST':
-        adv.favorites.add(request.user)
+        adv.favorites.add(request.user) # привязываю пользователя к объявление, как избранное. Да, не объявление избраное, а связь пользователя с объявлением
         # Возвращаем JSON-ответ с HTML-кодом кнопки
         response = {'button_html': '<button type="submit" class="fav_button_del">Удалить из избранного</button>'}
         return JsonResponse(response)
@@ -82,14 +81,12 @@ def add_to_favorites(request, pk):
 def remove_from_favorite(request, pk):
     adv = get_object_or_404(Advertisement, id=pk)
     if request.method == 'POST':
-        adv.favorites.clear()
+        adv.favorites.remove(request.user) #отвязываю текущего пользовтеля от объявления
         # Возвращаем JSON-ответ с HTML-кодом кнопки
         response = {'button_html': '<button type="submit" class="fav_button_on">Добавить в избранное</button>'}
         return JsonResponse(response)
-    # context = {"adv" : adv}
-    # return render(request, 'favorite.html', context)
 
-@login_required
+
 def favorit_list(request):  
     user = request.user
     favorites = user.favorite_adv.all() # Получаем все объявления, которые у пользователя в избранном
