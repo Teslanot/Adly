@@ -1,0 +1,31 @@
+
+.fav_button_del{
+    margin-top: 15px;
+    border: 3px solid rgb(48, 123, 253); 
+    border-radius: 5px; 
+    align-items: center; 
+    background-color: white; 
+    color: rgb(48, 123, 253);} 
+.fav_button_on{
+      margin-top: 15px; 
+      border: 3px solid rgb(48, 123, 253); 
+      border-radius: 5px; 
+      align-items: center; 
+      background-color: rgb(48, 123, 253); 
+      color: white;
+}
+
+.text-container{
+    display: flex;
+    width: 80%;
+    justify-content: center;
+}
+
+.reg-div{
+    width: 30%;
+    margin:30px;
+}
+.reg-text{
+    font-size: xx-large;
+    align-items: center;
+}

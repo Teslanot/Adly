@@ -9,23 +9,8 @@
   <!-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"> -->
   <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/fontello.css' %}">
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
   <title>{% block title %} Index {% endblock %}</title>
-  <style> .fav_button_del{
-    margin-top: 15px;
-    border: 3px solid rgb(48, 123, 253); 
-    border-radius: 5px; 
-    align-items: center; 
-    background-color: white; 
-    color: rgb(48, 123, 253);} 
-    .fav_button_on{
-      margin-top: 15px; 
-      border: 3px solid rgb(48, 123, 253); 
-      border-radius: 5px; 
-      align-items: center; 
-      background-color: rgb(48, 123, 253); 
-      color: white;
-    }
-    </style>
 </head>
 
 <body>
@@ -37,29 +22,7 @@
 {% block scripts %}
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<script>
-  $(document).ready(function() {
-    $('.fav_button_on, .fav_button_del').click(function(e) {
-        e.preventDefault();
-        var form = $(this).closest('form');
-        var url = form.attr('action');
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: form.serialize(),
-            success: function(response) {
-                // Обновляем только кнопку, если запрос успешен
-                var button = form.find('button');
-                button.replaceWith(response.button_html);
-            },
-            error: function(xhr, status, error) {
-                // Обрабатываем ошибку, если что-то пошло не так
-                console.log(error);
-            }
-        });
-    });
-  });
-</script>
+<script src="{%static 'js/index.js'%}"></script>
 {% endblock %}
 </body>
 

@@ -48,24 +48,9 @@
   </li>
   {% endif %}
 </ul>
-
-  <div class="row">
-    <div class="col" style="margin: 50px;">
-      <div class="display-2">
-        <span class="badge bg-primary">Страница</span>
-      </div>
+    <div class="reg-div">
+      <span class="reg-text badge bg-primary">Страница регистрации</span>
     </div>
-    <div class="col" style="margin: 50px;">
-      <div class="display-2">
-        <span class="badge bg-primary">регистрации</span>
-      </div>
-    </div>
-    <div class="col" style="margin: 50px;">
-      <div class="display-2">
-        <span class="badge bg-primary">пользователя</span>
-      </div>
-    </div>
-  </div>
   <div class="container">
     {{ form.non_field.errors }}
     <form method="post"> {% csrf_token %}
@@ -84,7 +69,7 @@
       {% endfor %}
       <div class="row mb-3 offset-sm-5">
         <div class="col">
-          <button type="submit" class="btn btn-success">Принять</button>
+          <button type="submit" style="margin-left: -9%;"class="btn btn-success">Принять</button>
         </div>
       </div>
     </form>
