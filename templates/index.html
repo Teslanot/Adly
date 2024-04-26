@@ -89,9 +89,11 @@
       <li class="nav-item">
         <a class="nav-link" href="/novinki_za_den">Новинки за день</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/favorites">Избранное</a>
-      </li>
+      {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="/favorites">Избранное</a>
+        </li>
+      {% endif %}
     </ul>
 
 
@@ -137,6 +139,7 @@
               <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
               <span>Цена: {{adv.prices}}</span>
             </a>
+            {% if user.is_authenticated %}   <!--  Пользователь вошел в аккаунт -->         
             {% if user in adv.favorites.all %} <!-- проверяю если избранное объявление привязано к пользователю-->
             <form action="{% url 'remove_from_favorite' adv.id %}" method="post">
               {% csrf_token %}
@@ -147,6 +150,7 @@
               {% csrf_token %}
               <button type="submit" class="fav_button_on" >Добавить в избранное</button>
             </form>
+            {% endif %}
             {% endif %}
           </div>
         </div>

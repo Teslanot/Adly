@@ -88,6 +88,7 @@
             <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
             <span>Цена: {{adv.prices}}</span>
           </a>
+          {% if user.is_authenticated %}          
           {% if user in adv.favorites.all %}
           <form action="{% url 'remove_from_favorite' adv.id %}" method="post">
             {% csrf_token %}
@@ -98,6 +99,7 @@
             {% csrf_token %}
             <button type="submit" class="fav_button_on">Добавить в избранное</button>
           </form>
+          {% endif %}
           {% endif %}
         </div>
       </div>
