@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
-<!-- подключили шаблон(унаследовали) -->
 {% load static %}
-<!-- подлючакете переменную static которая указывает ссылку на статические файлы -->
-<!-- http://127.0.0.1:8000/static/ -->
 {% block title %}   Новинки    {% endblock %}
 
 
@@ -19,7 +16,6 @@
       </a>
     </li>
 
-    <!-- если пользователь не авторизован -->
     {% if not user.is_authenticated %}
     <li class="nav-item">
       <a class="nav-link" href="{% url 'sign_in' %}">
@@ -50,8 +46,6 @@
     {% endif %}
 </ul>
 
-
-
 <div class="container">
     <div class="row">
       <ul class="nav nav-tabs bg-white">
@@ -76,19 +70,14 @@
 </div>
 <div class="col">
 
-  
- 
-
-
-  <!-- начало моего обьявления -->
 {% for adv in advertisements%}
   <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
     <div class="row g-0">
       <div class="col-md-4">
         <a href="{{ adv.get_absolute_url }}" class="nav-link">
-          {% if adv.image %}  <!-- проверяю что есть картинка -->
+          {% if adv.image %}
             <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card title">
-          {% else %}  <!-- иначе -->
+          {% else %}
             <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card title">
           {% endif %}
           
@@ -125,7 +114,6 @@
     </div>
   </div>
 {% endfor %}
-  <!-- конец обьявления -->
 </div>
 
 {% endblock %}

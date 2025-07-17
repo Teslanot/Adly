@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
-<!-- подключили шаблон(унаследовали) -->
 {% load static %}
-<!-- подлючакете переменную static которая указывает ссылку на статические файлы -->
-<!-- http://127.0.0.1:8000/static/ -->
 {% block title %}
 Главная
 {% endblock %}
@@ -19,7 +16,6 @@
     </a>
   </li>
 
-  <!-- если пользователь не авторизован -->
   {% if not user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'sign_in' %}">
@@ -53,7 +49,6 @@
 <div id="carouselExampleControls" class="carousel slide bg-primary" data-bs-ride="carousel">
   <div class="carousel-inner">
     <div class="carousel-item active">
-    <!-- http://127.0.0.1:8000/static/img/adv.png   -->
       <img src="{%static 'img/adv.png'%}" class="mx-auto d-block w-33" alt="...">
     </div>
     <div class="carousel-item">
@@ -96,31 +91,25 @@
       {% endif %}
     </ul>
 
-
-<!-- форма для поиска  -->
     <form class="row g-3" method="get">
       <div class="col-auto w-50">
         <input type="text" class="form-control" name='query' value="{% if title %}{{title}}{% endif %}">
-        <!-- если есть title то оставляю его в строке  -->
       </div>
       <div class="col-auto">
         <button type="submit" class="btn btn-success mb-3">Найти</button>
       </div>
     </form>
 
-
-
   </div>
   <div class="col" style="display: flex; flex-direction: column-reverse;">
-    <!-- начало моего обьявления -->
     {%for adv in advertisements%}
     <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
       <div class="row g-0">
         <div class="col-md-4">
           <a href="{{ adv.get_absolute_url }}" class="nav-link">
-            {% if adv.image %}  <!-- проверяю что есть картинка -->
+            {% if adv.image %}
               <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card image">
-            {% else %}  <!-- иначе -->
+            {% else %}
               <img src="{% static 'img/adv.png' %}" class="img-fluid rounded-start" alt="Card image">
             {% endif %}
             
@@ -139,8 +128,8 @@
               <p class="card-text"><small class="text-muted">Размещено: {{adv.created}}</small></p>
               <span>Цена: {{adv.prices}}</span>
             </a>
-            {% if user.is_authenticated %}   <!--  Пользователь вошел в аккаунт -->         
-            {% if user in adv.favorites.all %} <!-- проверяю если избранное объявление привязано к пользователю-->
+            {% if user.is_authenticated %} 
+            {% if user in adv.favorites.all %}
             <form action="{% url 'remove_from_favorite' adv.id %}" method="post">
               {% csrf_token %}
               <button type="submit" class="fav_button_del">Удалить из избранного</button>
@@ -157,8 +146,6 @@
       </div>
     </div>
     {% endfor %}
-    <!-- конец обьявления -->
-
 
   </div>
 </div>

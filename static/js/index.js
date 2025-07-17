@@ -8,12 +8,10 @@ $(document).ready(function() {
             type: 'POST',
             data: form.serialize(),
             success: function(response) {
-                // Обновляем только кнопку, если запрос успешен
                 var button = form.find('button')
                 button.replaceWith(response.button_html)
             },
             error: function(xhr, status, error) {
-                // Обрабатываем ошибку, если что-то пошло не так
                 console.log(error)
             }
         })

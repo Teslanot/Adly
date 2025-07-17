@@ -1,10 +1,6 @@
 {% extends 'base.html' %}
-<!-- подключил шаблон html для наследования -->
-
 {% load static %}
-
 {% block title %} Объявление {% endblock %}
-
 
 {% block content %}
 <ul class="nav nav-pills sticky-top bg-white nav-fill">
@@ -22,7 +18,7 @@
       <span style="font-weight: bold;">Разместить объявление</span>
     </a>
   </li>
-  <!-- если пользователь не авторизован -->
+
   {% if not user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'sign_in' %}">

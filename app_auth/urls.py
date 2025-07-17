@@ -1,9 +1,5 @@
-# маршрутизатор приложения
 from django.urls import path
-
 from .views import profile , login_view,logout_view,sign_in
-
-
 
 urlpatterns = [
     path('profile/', profile, name='profile'), # http://127.0.0.1:8000/auth/profile/
@@ -12,4 +8,3 @@ urlpatterns = [
     path('sign_in/', sign_in, name='sign_in'), # http://127.0.0.1:8000/auth/profile/
     
 ]
-#    16:40 - 16:50

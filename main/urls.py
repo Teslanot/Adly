@@ -20,7 +20,6 @@ from django.urls import path, include
 # include - для подколючения маршпрутизаторов приложения
 
 # импортирую свои представления
-from lesson_4.views import lesson
 
 
 # главный маршрутизатор
@@ -36,12 +35,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include('add.urls')), # подключил марштрутизатор приложения add
-    path("lesson_4/", lesson),
+    path("", include('add.urls')),
     path('auth/', include('app_auth.urls')),
-
 ]
 
 
-if settings.DEBUG: # если дебаггинг включен
-    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT) # подключаю ссылки медиа файло
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

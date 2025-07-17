@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-
 {% block title %} Лучшие пользователи {% endblock %}
-
 {% block content %}
-<!--указать блок -->
+
 <ul class="nav nav-pills sticky-top bg-white nav-fill">
   <li class="nav-item">
     <a class="nav-link" href="{% url 'home' %}">
@@ -16,9 +14,6 @@
     </a>
   </li>
 
-
-
-  <!-- если пользователь не авторизован -->
   {% if not user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'sign_in' %}">

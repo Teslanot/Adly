@@ -1,8 +1,5 @@
 {% extends 'base.html' %}
-<!-- подключили шаблон(унаследовали) -->
 {% load static %}
-<!-- подлючакете переменную static которая указывает ссылку на статические файлы -->
-<!-- http://127.0.0.1:8000/static/ -->
 {% block title %}   Новинки    {% endblock %}
 
 
@@ -19,7 +16,6 @@
       </a>
     </li>
 
-    <!-- если пользователь не авторизован -->
     {% if not user.is_authenticated %}
     <li class="nav-item">
       <a class="nav-link" href="{% url 'sign_in' %}">
@@ -72,7 +68,6 @@
 </div>
 
 <div class="col">
-  <!-- начало моего обьявления -->
 {% for adv in advertisements%}
   <div class="card mb-2" style="max-width: 1200px; margin-top: 20px;">
     <div class="row g-0">
@@ -117,6 +112,5 @@
     </div>
   </div>
 {% endfor %}
-  <!-- конец обьявления -->
 </div>
 {% endblock %}

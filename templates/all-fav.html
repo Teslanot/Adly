@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
-
 {% block title %} Избранное{% endblock %}
-
 {% block content %}
-<!--указать блок -->
+
 <ul class="nav nav-pills sticky-top bg-white nav-fill">
   <li class="nav-item">
     <a class="nav-link active" href="{% url 'home' %}">
@@ -16,9 +14,6 @@
     </a>
   </li>
 
-
-
-  <!-- если пользователь не авторизован -->
   {% if not user.is_authenticated %}
   <li class="nav-item">
     <a class="nav-link" href="{% url 'sign_in' %}">
@@ -69,7 +64,7 @@
     <div class="row g-0">
       <div class="col-md-4">
         <a href="{{ adv.get_absolute_url }}" class="nav-link">
-          {% if adv.image %}  <!-- проверяю что есть картинка -->
+          {% if adv.image %}
             <img src=" {{adv.image.url}} " class="img-fluid rounded-start" alt="Card title">
           {% endif %}
           
