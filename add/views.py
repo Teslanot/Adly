@@ -27,9 +27,19 @@ def home(request: WSGIRequest):
         data = Advertisement.objects.filter(title__icontains = title) # SELECT * FROM Advertisement WHERE title = title
     else: # если ничего не ищет(просто все обьявления)
         data = Advertisement.objects.all() # беру все записи из БД
+    
+    today = datetime.now().date()
+    week_ago = today - timedelta(days=7)
 
+    daily_ads = Advertisement.objects.filter(created=today)[:10]
+    weekly_ads = Advertisement.objects.filter(created=week_ago)[:10]
 
-    context = {'advertisements' : data, 'title': title} # словарь
+    context = {
+        'advertisements': data,
+        'title': title,
+        'daily_ads': daily_ads,
+        'weekly_ads': weekly_ads,
+    }
     return render(request, 'index.html', context)
 
 
