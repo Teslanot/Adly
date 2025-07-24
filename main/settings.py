@@ -151,7 +151,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [BASE_DIR/'static']  # указал путь к статике
 
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # константы для медиа
 MEDIA_URL = '/media/'

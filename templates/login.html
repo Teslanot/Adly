@@ -1,86 +1,183 @@
 {% extends 'base.html' %}
-{% block title %} Вход {% endblock %}
+{% load static %}
+{% block title %}
+Вход
+{% endblock %}
+
 {% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-white">
 
-
-<ul class="nav nav-pills sticky-top bg-white nav-fill">
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'home' %}">
-      <span style="font-weight: bold;">Главная</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'top_sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
-    </a>
-  </li>
-
-  {% if user.is_authenticated %} 
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'post_adv' %}">
-      <span style="font-weight: bold;">Разместить объявление</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'profile' %}">
-      <span style="font-weight: bold;">Профиль</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'logout' %}">
-      <span style="font-weight: bold;">Выйти</span>
-    </a> 
-  </li>
-  {% else %} 
-
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'sign_in' %}">
-      <span style="font-weight: bold;">Регистрация</span>
-    </a>
-  </li> 
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="{% url 'login' %}">
-      <span style="font-weight: bold;">Войти</span>
-    </a> 
-  </li>
-  {% endif %}
-</ul>
-  <div class="text-container">  
-    <div class="reg-div">
-      <span class="reg-text badge bg-primary">Страница авторизации пользователя</span>
+  <nav class="sticky top-0 z-50 backdrop-blur-xl bg-white/95 border-b border-white/20 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-center overflow-x-auto py-4">
+        <div class="flex space-x-4 flex-nowrap">
+          <a href="{% url 'home' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap">Главная</a>
+          <a href="{% url 'top_sellers' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap">Топ продавцов</a>
+          <a href="{% url 'sign_in' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap">Регистрация</a>
+          <a href="#" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Войти</a>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="container">
-    {% if error %}
-      <div class="col-sm-4 offset-4 w-25">
-        <div class="form-label bg-warning" style="margin: 10px 0px; ">
-          {{ error }}
-        </div>
-      </div>
-    {% endif %}
+  </nav>
 
-    <form method="post">
-      {% csrf_token %}
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Username</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input name='username' type="text" class="form-control form-control-lg">
+  <main class="flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 py-12 min-h-[calc(100vh-100px)]">
+    
+    <div class="text-center mb-12">
+      <div class="spotlight-badge inline-block">Страница авторизации</div>
+    </div>
+
+    <div class="w-full max-w-md mx-auto">
+      <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 p-8 space-y-8 fade-in">
+        
+        <div class="text-center">
+          <div class="mx-auto h-16 w-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg mb-6">
+            <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+          </div>
+          <h2 class="text-3xl font-bold text-gray-900 mb-2">Добро пожаловать!</h2>
+          <p class="text-sm text-gray-600">Войдите в свой аккаунт</p>
+        </div>
+
+        <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg hidden" id="error-message">
+          <div class="flex">
+            <svg class="h-5 w-5 text-red-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+            </svg>
+            <p class="ml-3 text-sm text-red-700">Неверное имя пользователя или пароль</p>
           </div>
         </div>
-      </div>
-      <div class="row mb-3">
-        <div class="col">
-          <label class="col-sm-4 col-form-label offset-4">Password</label>
-          <div class="col-sm-4 offset-4 w-25">
-            <input name='password' type="password" class="form-control form-control-lg">
+
+        <form class="space-y-6" onsubmit="handleSubmit(event)">
+          
+          <div class="space-y-2">
+            <label for="username" class="block text-sm font-medium text-gray-700">Имя пользователя</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                </svg>
+              </div>
+              <input 
+                id="username" 
+                name="username" 
+                type="text" 
+                required 
+                placeholder="Введите имя пользователя" 
+                class="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 placeholder-gray-400 text-sm">
+            </div>
           </div>
+
+          <div class="space-y-2">
+            <label for="password" class="block text-sm font-medium text-gray-700">Пароль</label>
+            <div class="relative">
+              <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+              </div>
+              <input 
+                id="password" 
+                name="password" 
+                type="password" 
+                required 
+                placeholder="Введите пароль" 
+                class="w-full pl-10 pr-4 py-3 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 placeholder-gray-400 text-sm">
+            </div>
+          </div>
+
+          <div class="pt-4">
+            <button 
+              type="submit" 
+              class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 focus:outline-none focus:ring-4 focus:ring-blue-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
+              <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                <svg class="h-5 w-5 text-blue-300 group-hover:text-blue-200 transition-colors duration-300" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                </svg>
+              </span>
+              Войти в аккаунт
+            </button>
+          </div>
+        </form>
+
+        <div class="text-center pt-4">
+          <p class="text-sm text-gray-600">
+            Нет аккаунта? 
+            <a href="#" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300">Зарегистрироваться</a>
+          </p>
         </div>
       </div>
-      <div class="row mb-3 offset-sm-5">
-        <div class="col">
-          <button type="submit" class="btn btn-success">login</button>
-        </div>
-      </div>
-    </form>
-  </div>
-  {% endblock %}
+    </div>
+  </main>
+</div>
+
+<script>
+// Анимация появления формы
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.fade-in');
+  if (form) {
+    setTimeout(() => {
+      form.style.opacity = '1';
+      form.style.transform = 'translateY(0)';
+    }, 200);
+  }
+});
+
+// Обработка отправки формы (демо)
+function handleSubmit(event) {
+  event.preventDefault();
+  const errorDiv = document.getElementById('error-message');
+  errorDiv.classList.remove('hidden');
+  setTimeout(() => {
+    errorDiv.classList.add('hidden');
+  }, 3000);
+}
+</script>
+
+<style>
+.fade-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.spotlight-badge {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.spotlight-badge::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: rotate(45deg);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+  100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+}
+
+/* Скрытие скроллбара для навигации */
+.overflow-x-auto::-webkit-scrollbar {
+  display: none;
+}
+.overflow-x-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>
+{% endblock %}

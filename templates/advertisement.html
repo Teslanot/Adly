@@ -3,50 +3,47 @@
 {% block title %} Объявление {% endblock %}
 
 {% block content %}
-<ul class="nav nav-pills sticky-top bg-white nav-fill">
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'home' %}">
-      <span style="font-weight: bold;">Главная</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'top_sellers' %}"><span style="font-weight: bold;">Топ продавцов</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link active" href="{% url 'post_adv' %}">
-      <span style="font-weight: bold;">Разместить объявление</span>
-    </a>
-  </li>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-white">
+  <nav class="sticky top-0 z-50 backdrop-blur-xl bg-white/95 border-b border-white/20 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-center overflow-x-auto">
+        <div class="flex space-x-1 p-2 flex-nowrap scrollbar-hide">
+          <a href="{% url 'home' %}"
+            class="flex-shrink-0 nav-link active px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
+            Главная
+          </a>
+          <a href="{% url 'top_sellers' %}"
+            class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">
+            Топ продавцов
+          </a>
 
-  {% if not user.is_authenticated %}
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'sign_in' %}">
-      <span style="font-weight: bold;">Регистрация</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'login' %}">
-      <span style="font-weight: bold;">Войти</span>
-    </a>
-  </li>
-  {% else %}
-  <li class="nav-item">
-    <a class="nav-link" aria-current="page" href="{% url 'profile' %}">
-      <span style="font-weight: bold;">Профиль</span>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'logout' %}">
-      <span style="font-weight: bold;">Выйти</span>
-    </a>
-  </li>
-  {% endif %}
-</ul>
-
-
-
-
+          {% if not user.is_authenticated %}
+          <a href="{% url 'sign_in' %}"
+            class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">
+            Регистрация
+          </a>
+          <a href="{% url 'login' %}"
+            class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">
+            Войти
+          </a>
+          {% else %}
+          <a href="{% url 'post_adv' %}"
+            class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">
+            Разместить объявление
+          </a>
+          <a href="{% url 'profile' %}"
+            class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">
+            Профиль
+          </a>
+          <a href="{% url 'logout' %}"
+            class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">
+            Выйти
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
 
 <div class="container" style="margin: 10px;">
   <div class="display-2">
@@ -80,5 +77,6 @@
       </div>
     </div>
   </div>
+</div>
 </div>
   {% endblock %}

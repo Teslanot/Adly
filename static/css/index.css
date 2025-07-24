@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 :root {
   --primary-blue: #2563eb;
   --light-blue: #eff6ff;

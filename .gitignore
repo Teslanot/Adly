@@ -11,3 +11,7 @@ media/advertisements/
 *.db
 
 node_modules/
+
+staticfiles
+
+tailwindcss.exe
