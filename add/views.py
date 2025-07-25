@@ -1,7 +1,6 @@
 from django.shortcuts import render,redirect, get_object_or_404
 from django.urls import reverse
 from .models import Advertisement
-# from .forms import AdverisementForm
 from .forms import AdvertisementForm
 from django.db.models import Count
 from django.contrib.auth import get_user_model
@@ -11,6 +10,8 @@ from django.urls import reverse_lazy
 from datetime import datetime, timedelta
 # from django.contrib import messages
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
 
 
 User = get_user_model()
@@ -48,26 +49,22 @@ def top_sellers(request):
 
 
 @login_required
+@require_POST
 def add_to_favorites(request, pk):
-    adv = get_object_or_404(Advertisement, id=pk)   
-    if request.method == 'POST':
-        adv.favorites.add(request.user)
+    adv = get_object_or_404(Advertisement, id=pk)
+    adv.favorites.add(request.user)
+    return JsonResponse({"success": True, "action": "added"})
 
-        response = {'button_html': '<button type="submit" class="fav_button_del">Удалить из избранного</button>'}
-        return JsonResponse(response)
+@login_required
+@require_POST
+def remove_from_favorite(request, pk):
+    adv = get_object_or_404(Advertisement, id=pk)
+    adv.favorites.remove(request.user)
+    return JsonResponse({"success": True, "action": "removed"})
 
 
 @login_required
-def remove_from_favorite(request, pk):
-    adv = get_object_or_404(Advertisement, id=pk)
-    if request.method == 'POST':
-        adv.favorites.remove(request.user)
-
-        response = {'button_html': '<button type="submit" class="fav_button_on">Добавить в избранное</button>'}
-        return JsonResponse(response)
-
-
-def favorit_list(request):  
+def favorit_list(request):
     user = request.user
     favorites = user.favorite_adv.all()
     context = {"favorite_list": favorites}

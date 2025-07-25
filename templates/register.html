@@ -6,12 +6,11 @@
 {% block title %} Регистрация {% endblock %}
 {% block content %}
 
-<div class="min-h-screen bg-gradient-to-br from-blue-50 to-white">
-
+<div class="min-h-screen relative bg-gradient-to-br from-blue-50 to-white overflow-hidden">
   <nav class="sticky top-0 z-50 backdrop-blur-xl bg-white/95 border-b border-white/20 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-center overflow-x-auto py-4">
-        <div class="flex space-x-4 flex-nowrap">
+      <div class="flex justify-center overflow-x-auto">
+        <div class="flex space-x-1 p-2 flex-nowrap scrollbar-hide">
           <a href="{% url 'home' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap">Главная</a>
           <a href="{% url 'top_sellers' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5 whitespace-nowrap">Топ продавцов</a>
           <a href="{% url 'sign_in' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Регистрация</a>

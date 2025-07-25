@@ -1,40 +1,46 @@
 from django import forms
-from django.forms import ModelForm
-from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
-from add.models import Advertisement
-from django.contrib.auth.forms import UserCreationForm 
-from django.contrib.auth.models import User 
 
 class AdvertisementForm(forms.Form):
-    title       = forms.CharField(max_length=100, widget=forms.TextInput(
-        {"class": "form-control-lg"}
-    ))
-    descriptions = forms.CharField(widget=forms.Textarea(
-        {"class": "form-control-lg"}
-    ))
-    prices       = forms.DecimalField(widget=forms.NumberInput(
-        {"class": "form-control-lg"}
-    ))
-    auction     = forms.BooleanField(required=False, widget=forms.CheckboxInput(
-        {"class": "form-check-input"}
-    ))
-    image       = forms.ImageField(required= False, widget=forms.FileInput(
-        {"class": "form-control-lg"}
-    ))
+    title = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={
+            "class": "w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "placeholder": "Введите заголовок"
+        })
+    )
 
-    title.widget.attrs.update({'class': 'special'})
+    descriptions = forms.CharField(
+        widget=forms.Textarea(attrs={
+            "class": "w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "rows": "5",
+            "placeholder": "Опишите объявление"
+        })
+    )
 
+    prices = forms.DecimalField(
+        widget=forms.NumberInput(attrs={
+            "class": "w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "placeholder": "Введите цену"
+        })
+    )
 
+    auction = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={
+            "class": "h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+        })
+    )
+
+    image = forms.ImageField(
+        required=False,
+        widget=forms.ClearableFileInput(attrs={
+            "class": "w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        })
+    )
 
     def clean_recipients(self):
         datab = self.cleaned_data['title']
         if "?" not in datab:
-            raise ValidationError("?")
-
+            raise ValidationError("Заголовок должен содержать знак вопроса '?'")
         return datab
-
-
-
-
-

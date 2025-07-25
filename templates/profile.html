@@ -1,10 +1,8 @@
-<!DOCTYPE html>
 {% extends 'base.html' %}
 {% block title %} Профиль {% endblock %}
 {% block content %}
 
-<div class="min-h-screen relative bg-gradient-to-br from-blue-50 to-white overflow-hidden">
-
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-white">
   <nav class="sticky top-0 z-50 backdrop-blur-xl bg-white/95 border-b border-white/20 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-center overflow-x-auto">
@@ -14,7 +12,7 @@
 
           {% if not user.is_authenticated %}
           <a href="{% url 'sign_in' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">Регистрация</a>
-          <a href="{% url 'login' %}" class="flex-shrink-0 nav-link active px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">Войти</a>
+          <a href="{% url 'login' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">Войти</a>
           {% else %}
           <a href="{% url 'post_adv' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">Разместить объявление</a>
           <a href="{% url 'profile' %}" class="flex-shrink-0 nav-link active px-6 py-3 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">Профиль</a>
@@ -25,10 +23,53 @@
     </div>
   </nav>
 
-  <div class="col" style="margin: 50px;">
-    <div class="display-5">
-      <span class="badge bg-primary">Сейчас вы находитесь на сайте под ником {{ user }}.</span>
+  <div class="max-w-4xl mx-auto mt-10 bg-white rounded-2xl shadow-lg p-8 border border-gray-200">
+    <!-- Профиль блок -->
+    <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
+
+      <div class="flex-shrink-0">
+        <img src="https://via.placeholder.com/150" alt="Аватар пользователя"
+          class="w-32 h-32 rounded-full border-4 border-blue-500 object-cover">
+      </div>
+
+
+      <div class="flex-1">
+        <h2 class="text-2xl font-bold mb-2">Имя пользователя: <span class="text-blue-600">{{ user.username }}</span></h2>
+        <p class="text-gray-600 mb-2">Количество постов: <span class="font-semibold">{{ adv_list|length }}</span></p>
+
+        <p class="text-gray-500 mb-4 italic">Здесь появятся ваши контакты, рейтинг, подписчики и другая информация.</p>
+
+        <button id="toggle-posts" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+          Показать/Скрыть мои объявления
+        </button>
+      </div>
+    </div>
+
+    <!-- Список объявлений -->
+    <div id="posts-list" class="mt-6 hidden">
+      {% if adv_list %}
+        <div class="space-y-4">
+          {% for adv in adv_list %}
+            <div class="p-4 border rounded-md hover:shadow transition">
+              <h3 class="text-lg font-semibold">{{ adv.title }}</h3>
+              <p class="text-gray-600">{{ adv.descriptions|truncatewords:20 }}</p>
+              <p class="text-sm text-gray-400">Создано: {{ adv.created }}</p>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="text-gray-500 italic">У вас пока нет объявлений.</p>
+      {% endif %}
     </div>
   </div>
 </div>
+
+<script>
+  const toggleBtn = document.getElementById('toggle-posts');
+  const postsList = document.getElementById('posts-list');
+
+  toggleBtn.addEventListener('click', () => {
+    postsList.classList.toggle('hidden');
+  });
+</script>
 {% endblock %}
