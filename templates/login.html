@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block csslinks %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
 {% block title %}
 Вход
 {% endblock %}
@@ -38,7 +41,7 @@
           <h2 class="text-3xl font-bold text-gray-900 mb-2">Добро пожаловать!</h2>
           <p class="text-sm text-gray-600">Войдите в свой аккаунт</p>
         </div>
-
+        {% if error %}
         <div class="bg-red-50 border-l-4 border-red-400 p-4 rounded-lg hidden" id="error-message">
           <div class="flex">
             <svg class="h-5 w-5 text-red-400 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
@@ -47,9 +50,10 @@
             <p class="ml-3 text-sm text-red-700">Неверное имя пользователя или пароль</p>
           </div>
         </div>
+        {% endif %}
 
-        <form class="space-y-6" onsubmit="handleSubmit(event)">
-          
+        <form class="space-y-6" method="post">
+          {% csrf_token %}
           <div class="space-y-2">
             <label for="username" class="block text-sm font-medium text-gray-700">Имя пользователя</label>
             <div class="relative">
@@ -103,7 +107,7 @@
         <div class="text-center pt-4">
           <p class="text-sm text-gray-600">
             Нет аккаунта? 
-            <a href="#" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300">Зарегистрироваться</a>
+            <a href="{% url 'sign_in' %}" class="font-medium text-blue-600 hover:text-blue-500 transition-colors duration-300">Зарегистрироваться</a>
           </p>
         </div>
       </div>
@@ -112,7 +116,6 @@
 </div>
 
 <script>
-// Анимация появления формы
 document.addEventListener('DOMContentLoaded', function() {
   const form = document.querySelector('.fade-in');
   if (form) {
@@ -122,62 +125,5 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 200);
   }
 });
-
-// Обработка отправки формы (демо)
-function handleSubmit(event) {
-  event.preventDefault();
-  const errorDiv = document.getElementById('error-message');
-  errorDiv.classList.remove('hidden');
-  setTimeout(() => {
-    errorDiv.classList.add('hidden');
-  }, 3000);
-}
 </script>
-
-<style>
-.fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.spotlight-badge {
-  background: linear-gradient(135deg, #2563eb, #60a5fa);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 1.5rem;
-  font-size: 1.25rem;
-  font-weight: 600;
-  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
-  position: relative;
-  overflow: hidden;
-}
-
-.spotlight-badge::after {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  transform: rotate(45deg);
-  animation: shine 3s infinite;
-}
-
-@keyframes shine {
-  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-  50% { transform: translateX(100%) translateY(100%) rotate(45deg); }
-  100% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
-}
-
-/* Скрытие скроллбара для навигации */
-.overflow-x-auto::-webkit-scrollbar {
-  display: none;
-}
-.overflow-x-auto {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-</style>
 {% endblock %}

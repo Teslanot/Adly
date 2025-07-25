@@ -1,10 +1,10 @@
 from django.urls import path
-from .views import profile , login_view,logout_view,sign_in
+from .views import profile , login_view,logout_view,register
 
 urlpatterns = [
-    path('profile/', profile, name='profile'), # http://127.0.0.1:8000/auth/profile/
-    path('login/', login_view, name='login'), # http://127.0.0.1:8000/auth/profile/
-    path('logout/', logout_view, name='logout'), # http://127.0.0.1:8000/auth/profile/
-    path('sign_in/', sign_in, name='sign_in'), # http://127.0.0.1:8000/auth/profile/
+    path('profile/', profile, name='profile'),
+    path('login/', login_view, name='login'),
+    path('logout/', logout_view, name='logout'),
+    path('sign_in/', register, name='sign_in'),
     
 ]

@@ -393,7 +393,6 @@ body {
   box-shadow: var(--shadow-sm);
 }
 
-/* Навигационные табы */
 .nav-tabs {
   border: none;
   background: rgba(255, 255, 255, 0.9);
@@ -427,7 +426,6 @@ body {
   transform: translateY(-1px);
 }
 
-/* Анимации появления */
 .fade-in {
   opacity: 0;
   transform: translateY(30px);
@@ -449,7 +447,6 @@ body {
   animation-delay: 0.4s;
 }
 
-/* Адаптивность */
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--spacing-xs);
@@ -484,7 +481,6 @@ body {
   }
 }
 
-/* Дополнительные утилиты */
 .glass-effect {
   background: rgba(255, 255, 255, 0.25);
   backdrop-filter: blur(10px);
@@ -507,7 +503,6 @@ body {
   50% { transform: translateY(-10px); }
 }
 
-/* Дополнительные стили для регистрации */
 .text-container {
   display: flex;
   width: 80%;
@@ -534,7 +529,6 @@ body {
   margin-bottom: var(--spacing-md);
 }
 
-/* Состояния загрузки */
 .loading {
   position: relative;
   overflow: hidden;

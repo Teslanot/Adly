@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block csslinks %}
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}">
+{% endblock %}
 {% block title %}
 Главная
 {% endblock %}
@@ -139,28 +142,22 @@
         <span class="w-1 h-6 bg-gradient-to-b from-blue-500 to-blue-600 rounded-full mr-3"></span>
         Новинки за день
       </h2>
-      <div class="flex space-x-4 overflow-x-auto scrollbar-hide pb-2">
+      <div class="flex flex-nowrap md:flex-wrap gap-4 overflow-x-auto md:overflow-x-visible scrollbar-hide pb-2">
         {% for adv in daily_ads %}
-        <div class="w-56 flex-shrink-0 bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300">
+        <div class="w-56 md:w-[200px] lg:w-[240px] xl:w-[280px] flex-shrink-0 md:flex-shrink md:flex-grow-0 bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300">
           <a href="{{ adv.get_absolute_url }}" class="block group">
-            <div class="w-full h-36 overflow-hidden rounded-t-lg">
+            <div class="aspect-square mb-3 overflow-hidden rounded-lg">
               {% if adv.image %}
-              <img src="{{ adv.image.url }}" alt="{{ adv.title }}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="{{ adv.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
               {% else %}
-              <img src="{% static 'img/adv.png' %}" alt="{{ adv.title }}"
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <img src="{% static 'img/adv.png' %}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
               {% endif %}
             </div>
-            <div class="p-3">
-              <h3 class="text-sm font-semibold text-gray-800 mb-1 group-hover:text-blue-600 transition-colors">
-                {{ adv.title }}
-              </h3>
-              <p class="text-xs text-gray-500 mb-2">{{ adv.descriptions|truncatewords:8 }}</p>
-              <div class="flex justify-between items-center">
-                <span class="text-sm font-bold text-blue-600">{{ adv.prices }} ₽</span>
-                <span class="text-[10px] text-gray-400">{{ adv.created|date:"d.m" }}</span>
-              </div>
+            <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 mb-2">{{ adv.title }}</h3>
+            <p class="text-sm text-gray-600 mb-2">{{ adv.descriptions|truncatewords:10 }}</p>
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold text-blue-600">{{ adv.prices }}</span>
+              <span class="text-xs text-gray-500">{{ adv.created|date:"d.m" }}</span>
             </div>
           </a>
         </div>
@@ -169,33 +166,30 @@
     </div>
     {% endif %}
 
-
     {% if weekly_ads %}
-    <div class="horizontal-scroll-container mb-12">
-      <h2 class="horizontal-scroll-title flex items-center">
+    <div class="mb-12">
+      <h2 class="flex items-center mb-4 text-xl font-semibold">
         <span class="w-1 h-6 bg-gradient-to-b from-purple-500 to-purple-600 rounded-full mr-3"></span>
         Новинки за неделю
       </h2>
-      <div class="horizontal-scroll">
+      <div class="flex flex-nowrap md:flex-wrap gap-4 overflow-x-auto md:overflow-x-visible scrollbar-hide pb-2">
         {% for adv in weekly_ads %}
-        <div class="horizontal-item fade-in fade-in-delayed">
-          <div class="horizontal-item-content">
-            <a href="{{ adv.get_absolute_url }}" class="block group">
-              <div class="aspect-square mb-3 overflow-hidden rounded-lg">
-                {% if adv.image %}
-                <img src="{{ adv.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
-                {% else %}
-                <img src="{% static 'img/adv.png' %}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
-                {% endif %}
-              </div>
-              <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 mb-2">{{ adv.title }}</h3>
-              <p class="text-sm text-gray-600 mb-2">{{ adv.descriptions|truncatewords:10 }}</p>
-              <div class="flex justify-between items-center">
-                <span class="text-lg font-bold text-blue-600">{{ adv.prices }}</span>
-                <span class="text-xs text-gray-500">{{ adv.created|date:"d.m" }}</span>
-              </div>
-            </a>
-          </div>
+        <div class="w-56 md:w-[200px] lg:w-[240px] xl:w-[280px] flex-shrink-0 md:flex-shrink md:flex-grow-0 bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300">
+          <a href="{{ adv.get_absolute_url }}" class="block group">
+            <div class="aspect-square mb-3 overflow-hidden rounded-lg">
+              {% if adv.image %}
+              <img src="{{ adv.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
+              {% else %}
+              <img src="{% static 'img/adv.png' %}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
+              {% endif %}
+            </div>
+            <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 mb-2">{{ adv.title }}</h3>
+            <p class="text-sm text-gray-600 mb-2">{{ adv.descriptions|truncatewords:10 }}</p>
+            <div class="flex justify-between items-center">
+              <span class="text-lg font-bold text-blue-600">{{ adv.prices }}</span>
+              <span class="text-xs text-gray-500">{{ adv.created|date:"d.m" }}</span>
+            </div>
+          </a>
         </div>
         {% endfor %}
       </div>
@@ -206,12 +200,6 @@
       <div class="flex space-x-2 p-2 overflow-x-auto flex-nowrap scrollbar-hide">
         <a href="#" class="nav-link active flex-shrink-0 px-6 py-3 text-sm font-medium text-white bg-blue-600 rounded-lg shadow-sm">
           Проверенные продавцы
-        </a>
-        <a href="/novinki" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300">
-          Новинки за неделю
-        </a>
-        <a href="/novinki_za_den" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300">
-          Новинки за день
         </a>
         {% if user.is_authenticated %}
         <a href="/favorites" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300">
