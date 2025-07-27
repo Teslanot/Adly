@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}Редактирование профиля{% endblock %}
+{% block content %}
+
+<div class="max-w-xl mx-auto mt-10 bg-white p-8 rounded-xl shadow-xl space-y-6 border border-gray-200">
+  <h2 class="text-2xl font-bold text-center text-blue-600">Редактировать профиль</h2>
+  <form method="post" enctype="multipart/form-data" class="space-y-4">
+    {% csrf_token %}
+    
+    {{ user_form.non_field_errors }}
+    {{ avatar_form.non_field_errors }}
+
+    {% for field in user_form %}
+      <div>
+        {{ field.errors }}
+        {{ field }}
+      </div>
+    {% endfor %}
+
+    <div>
+      {{ avatar_form.avatar.label_tag }}
+      {{ avatar_form.avatar }}
+    </div>
+
+    <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition-all">
+      Сохранить изменения
+    </button>
+  </form>
+
+  <a href="{% url 'password_change' %}" class="block text-center text-blue-500 hover:underline">Изменить пароль</a>
+
+  <form method="post" action="{% url 'delete_account' %}" class="text-center mt-6">
+    {% csrf_token %}
+    <button type="submit" class="text-red-600 hover:underline">Удалить аккаунт</button>
+  </form>
+</div>
+
+{% endblock %}

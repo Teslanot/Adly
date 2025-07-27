@@ -4,9 +4,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm
 
-@login_required(login_url=reverse_lazy('login'))
-def profile(request):
-    return render(request, 'profile.html')
 
 def logout_view(request):
     logout(request)

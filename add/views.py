@@ -1,23 +1,33 @@
-from django.shortcuts import render,redirect, get_object_or_404
+from django.contrib import messages
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
+from django.urls import reverse_lazy
+
 from .models import Advertisement
+from .models import Profile
 from .forms import AdvertisementForm
+from .forms import ProfileUpdateForm, AvatarUpdateForm, CustomPasswordChangeForm
+
 from django.db.models import Count
 from django.contrib.auth import get_user_model
 from django.core.handlers.wsgi import WSGIRequest
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
-from django.urls import reverse_lazy
+from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import PasswordChangeView
+
 from datetime import datetime, timedelta
-# from django.contrib import messages
+
 from django.http import JsonResponse
+
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 
 
 User = get_user_model()
 
-
-def home(request: WSGIRequest):
+def home(request):
     title = request.GET.get('query')
     if title:
         data = Advertisement.objects.filter(title__icontains = title)
@@ -108,3 +118,64 @@ def post_adv(request: WSGIRequest):
 
     context = {'form' : form}
     return render(request, 'advertisement-post.html', context)
+
+@login_required
+def profile(request):
+    user = request.user
+    adv_list = Advertisement.objects.filter(user=user).order_by('-created')
+    adv_count = adv_list.count()
+    
+    context = {
+        "adv_list": adv_list,
+        "adv_count": adv_count,
+        "user": user
+    }
+    return render(request, 'profile.html', context)
+
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+
+    profile, created = Profile.objects.get_or_create(user=user)
+
+    if request.method == 'POST':
+        user_form = ProfileUpdateForm(request.POST, instance=user)
+        avatar_form = AvatarUpdateForm(request.POST, request.FILES, instance=profile)
+
+        if user_form.is_valid() and avatar_form.is_valid():
+            user_form.save()
+            avatar_form.save()
+            return redirect('profile')
+    else:
+        user_form = ProfileUpdateForm(instance=user)
+        avatar_form = AvatarUpdateForm(instance=profile)
+
+    return render(request, 'edit_profile.html', {
+        'user_form': user_form,
+        'avatar_form': avatar_form,
+    })
+
+@login_required
+def delete_account(request):
+    user = request.user
+    if request.method == 'POST':
+        user.delete()
+        logout(request)
+        return redirect('home')
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    form_class = CustomPasswordChangeForm
+    template_name = 'change_password.html'
+    success_message = "Ваш пароль успешно изменен"
+    success_url = reverse_lazy('profile')
+
+class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
+    template_name = 'password_reset.html'
+    email_template_name = 'password_reset_email.html'
+    subject_template_name = 'password_reset_subject.txt'
+    success_message = (
+        "Инструкция по сбросу пароля отправлена, если такой email существует в системе."
+    )
+    success_url = reverse_lazy('home')

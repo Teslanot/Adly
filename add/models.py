@@ -17,6 +17,10 @@ from django.urls import reverse
 
 User = get_user_model()
 
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(upload_to='avatars/', default='avatars/default.jpg')
+
 
 class Advertisement(models.Model):
     title = models.CharField("Заголовок",max_length= 128)

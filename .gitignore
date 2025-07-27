@@ -6,9 +6,12 @@ __pycache__/
 .vscode/
 
 media/advertisements/
+media/avatars/
 
 *.sqlite3
 *.db
+
+.env
 
 node_modules/
 

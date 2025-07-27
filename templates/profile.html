@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %} Профиль {% endblock %}
 {% block content %}
 
@@ -28,32 +29,47 @@
     <div class="flex flex-col md:flex-row items-center md:items-start space-y-6 md:space-y-0 md:space-x-8">
 
       <div class="flex-shrink-0">
-        <img src="https://via.placeholder.com/150" alt="Аватар пользователя"
+        <img src="{{ user.profile.avatar.url }}" alt="Аватар пользователя"
           class="w-32 h-32 rounded-full border-4 border-blue-500 object-cover">
       </div>
 
 
       <div class="flex-1">
         <h2 class="text-2xl font-bold mb-2">Имя пользователя: <span class="text-blue-600">{{ user.username }}</span></h2>
-        <p class="text-gray-600 mb-2">Количество постов: <span class="font-semibold">{{ adv_list|length }}</span></p>
+        <p class="text-gray-600 mb-2">Количество постов: <span class="font-semibold">{{ adv_count }}</span></p>
 
         <p class="text-gray-500 mb-4 italic">Здесь появятся ваши контакты, рейтинг, подписчики и другая информация.</p>
 
-        <button id="toggle-posts" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-          Показать/Скрыть мои объявления
+        <button id="toggle-posts" class="bg-blue-500 text-white mr-10 px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+          Показать мои объявления
         </button>
+        <a href="{% url 'edit_profile' %}" class="bg-blue-500 text-white mr-10 px-4 py-2 rounded-lg hover:bg-blue-600 transition">
+          Изменить профиль
+        </a>
+        <a href="{% url 'reset_password' %}" class="text-red-600 hover:underline">Забыли пароль?</a>
       </div>
     </div>
 
-    <!-- Список объявлений -->
     <div id="posts-list" class="mt-6 hidden">
       {% if adv_list %}
         <div class="space-y-4">
           {% for adv in adv_list %}
-            <div class="p-4 border rounded-md hover:shadow transition">
-              <h3 class="text-lg font-semibold">{{ adv.title }}</h3>
-              <p class="text-gray-600">{{ adv.descriptions|truncatewords:20 }}</p>
-              <p class="text-sm text-gray-400">Создано: {{ adv.created }}</p>
+            <div class="w-56 md:w-[200px] lg:w-[240px] xl:w-[280px] flex-shrink-0 md:flex-shrink md:flex-grow-0 bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300">
+              <a href="{{ adv.get_absolute_url }}" class="block group">
+                <div class="aspect-square mb-3 overflow-hidden rounded-lg">
+                  {% if adv.image %}
+                  <img src="{{ adv.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
+                  {% else %}
+                  <img src="{% static 'img/adv.png' %}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
+                  {% endif %}
+                </div>
+                <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 mb-2">{{ adv.title }}</h3>
+                <p class="text-sm text-gray-600 mb-2">{{ adv.descriptions|truncatewords:10 }}</p>
+                <div class="flex justify-between items-center">
+                  <span class="text-lg font-bold text-blue-600">{{ adv.prices }}</span>
+                  <span class="text-xs text-gray-500">{{ adv.created|date:"d.m" }}</span>
+                </div>
+              </a>
             </div>
           {% endfor %}
         </div>
@@ -69,7 +85,8 @@
   const postsList = document.getElementById('posts-list');
 
   toggleBtn.addEventListener('click', () => {
-    postsList.classList.toggle('hidden');
+    const isHidden = postsList.classList.toggle('hidden');
+    toggleBtn.textContent = isHidden ? 'Показать мои объявления' : 'Скрыть мои объявления';
   });
 </script>
 {% endblock %}
