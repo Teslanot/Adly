@@ -43,6 +43,11 @@ class AdvertisementForm(forms.Form):
             "class": "w-full border border-gray-300 rounded-md p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
         })
     )
+    def clean_prices(self):
+        price = self.cleaned_data.get('prices')
+        if price is not None and price < 0:
+            raise ValidationError("Цена не может быть отрицательной.")
+        return price
 
     def clean_recipients(self):
         datab = self.cleaned_data['title']

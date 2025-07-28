@@ -165,6 +165,16 @@ def delete_account(request):
         logout(request)
         return redirect('home')
 
+@login_required
+@require_POST
+def delete_adv(request, pk):
+    if not request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        return JsonResponse({"success": False, "message": "Неверный запрос"}, status=400)
+
+    adv = get_object_or_404(Advertisement, id=pk, user=request.user)
+    adv.delete()
+    return JsonResponse({"success": True})
+
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     form_class = CustomPasswordChangeForm
     template_name = 'change_password.html'

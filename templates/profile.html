@@ -10,7 +10,6 @@
         <div class="flex space-x-1 p-2 flex-nowrap scrollbar-hide">
           <a href="{% url 'home' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">Главная</a>
           <a href="{% url 'top_sellers' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">Топ продавцов</a>
-
           {% if not user.is_authenticated %}
           <a href="{% url 'sign_in' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">Регистрация</a>
           <a href="{% url 'login' %}" class="flex-shrink-0 px-6 py-3 text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all duration-300 hover:-translate-y-0.5">Войти</a>
@@ -37,9 +36,7 @@
       <div class="flex-1">
         <h2 class="text-2xl font-bold mb-2">Имя пользователя: <span class="text-blue-600">{{ user.username }}</span></h2>
         <p class="text-gray-600 mb-2">Количество постов: <span class="font-semibold">{{ adv_count }}</span></p>
-
         <p class="text-gray-500 mb-4 italic">Здесь появятся ваши контакты, рейтинг, подписчики и другая информация.</p>
-
         <button id="toggle-posts" class="bg-blue-500 text-white mr-10 px-4 py-2 rounded-lg hover:bg-blue-600 transition">
           Показать мои объявления
         </button>
@@ -52,24 +49,34 @@
 
     <div id="posts-list" class="mt-6 hidden">
       {% if adv_list %}
-        <div class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {% for adv in adv_list %}
-            <div class="w-56 md:w-[200px] lg:w-[240px] xl:w-[280px] flex-shrink-0 md:flex-shrink md:flex-grow-0 bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300">
+            <div id="adv-{{ adv.id }}" class="adv-card bg-white rounded-lg shadow hover:shadow-lg transition-all duration-300 p-4 relative">
               <a href="{{ adv.get_absolute_url }}" class="block group">
                 <div class="aspect-square mb-3 overflow-hidden rounded-lg">
                   {% if adv.image %}
-                  <img src="{{ adv.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
+                    <img src="{{ adv.image.url }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
                   {% else %}
-                  <img src="{% static 'img/adv.png' %}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
+                    <img src="{% static 'img/adv.png' %}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" alt="{{ adv.title }}">
                   {% endif %}
                 </div>
-                <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition-colors duration-300 mb-2">{{ adv.title }}</h3>
+                <h3 class="font-semibold text-gray-900 group-hover:text-blue-600 transition mb-2">{{ adv.title }}</h3>
                 <p class="text-sm text-gray-600 mb-2">{{ adv.descriptions|truncatewords:10 }}</p>
                 <div class="flex justify-between items-center">
-                  <span class="text-lg font-bold text-blue-600">{{ adv.prices }}</span>
+                  <span class="text-lg font-bold text-blue-600">
+                      {% if adv.prices == 0 %}
+                          Бесплатно
+                      {% else %}
+                          {{ adv.prices }} ₽
+                      {% endif %}
+                  </span>
                   <span class="text-xs text-gray-500">{{ adv.created|date:"d.m" }}</span>
                 </div>
               </a>
+              <button class="delete-adv absolute top-2 right-2 text-red-600 hover:text-red-800 transition"
+                      data-id="{{ adv.id }}" title="Удалить объявление">
+                ✖
+              </button>
             </div>
           {% endfor %}
         </div>
@@ -87,6 +94,38 @@
   toggleBtn.addEventListener('click', () => {
     const isHidden = postsList.classList.toggle('hidden');
     toggleBtn.textContent = isHidden ? 'Показать мои объявления' : 'Скрыть мои объявления';
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const deleteButtons = document.querySelectorAll('.delete-adv');
+
+    deleteButtons.forEach(button => {
+      button.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const advId = button.dataset.id;
+
+        if (!confirm('Вы уверены, что хотите удалить это объявление?')) return;
+
+        try {
+          const response = await fetch(`/profile/adv/delete/${advId}/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+              'X-Requested-With': 'XMLHttpRequest',
+            }
+          });
+
+          const data = await response.json();
+          if (data.success) {
+            document.getElementById(`adv-${advId}`).remove();
+          } else {
+            alert(data.message || 'Ошибка удаления');
+          }
+        } catch (err) {
+          console.error(err);
+          alert('Ошибка при отправке запроса');
+        }
+      });
+    });
   });
 </script>
 {% endblock %}
