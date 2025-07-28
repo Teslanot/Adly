@@ -23,7 +23,6 @@
     </div>
   </nav>
 
-  <!-- Заголовок -->
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-10">
     <h1 class="text-3xl font-bold text-gray-800 mb-6">Мои избранные объявления</h1>
 
@@ -116,6 +115,12 @@ document.addEventListener('click', function(e) {
       }
     })
     .catch(error => console.error(error));
+  }
+});
+
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+    window.location.reload();
   }
 });
 </script>

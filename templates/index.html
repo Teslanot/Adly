@@ -202,7 +202,7 @@
 
     <!-- Основные объявления -->
     <div class="space-y-6">
-      {% for adv in advertisements %}
+      {% for adv in page_obj %}
       <div class="card bg-white/95 backdrop-blur-sm rounded-2xl shadow-sm border border-white/20 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1 fade-in" style="animation-delay: 0.2;">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-0">
           <div class="md:col-span-1">
@@ -253,14 +253,14 @@
                 {% if user in adv.favorites.all %}
                   <button type="submit" class="fav_toggle bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
                     data-adv-id="{{ adv.id }}"
-                    data-action="removed"
+                    data-action="remove"
                   >
                     Удалить из избранного
                   </button>
                 {% else %}
                   <button type="submit" class="fav_toggle bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
                     data-adv-id="{{ adv.id }}"
-                    data-action="added"
+                    data-action="add"
                   >
                     Добавить в избранное
                   </button>
@@ -272,6 +272,19 @@
         </div>
       </div>
       {% endfor %}
+    </div>
+    <div class="mt-6 flex justify-center space-x-2">
+    {% if page_obj.has_previous %}
+      <a href="?page=1{% if title %}&query={{ title }}{% endif %}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">« Первая</a>
+      <a href="?page={{ page_obj.previous_page_number }}{% if title %}&query={{ title }}{% endif %}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">← Назад</a>
+    {% endif %}
+
+    <span class="px-3 py-1 bg-blue-500 text-white rounded">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}{% if title %}&query={{ title }}{% endif %}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Вперёд →</a>
+      <a href="?page={{ page_obj.paginator.num_pages }}{% if title %}&query={{ title }}{% endif %}" class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300">Последняя »</a>
+    {% endif %}
     </div>
   </div>
 </div>
@@ -353,5 +366,12 @@ document.addEventListener('click', function(e) {
     .catch(error => console.error(error));
   }
 });  
+
+
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted || (window.performance && window.performance.navigation.type === 2)) {
+    window.location.reload();
+  }
+});
 </script>
 {% endblock %}

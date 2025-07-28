@@ -1,4 +1,6 @@
 from django.contrib import messages
+from django.core.handlers.wsgi import WSGIRequest
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.urls import reverse_lazy
@@ -10,7 +12,6 @@ from .forms import ProfileUpdateForm, AvatarUpdateForm, CustomPasswordChangeForm
 
 from django.db.models import Count
 from django.contrib.auth import get_user_model
-from django.core.handlers.wsgi import WSGIRequest
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
@@ -32,8 +33,12 @@ def home(request):
     if title:
         data = Advertisement.objects.filter(title__icontains = title)
     else:
-        data = Advertisement.objects.all()
+        data = Advertisement.objects.all().order_by('-created')
     
+    paginator = Paginator(data, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     today = datetime.now().date()
     week_ago = today - timedelta(days=7)
 
@@ -41,10 +46,10 @@ def home(request):
     weekly_ads = Advertisement.objects.filter(created=week_ago)[:10]
 
     context = {
-        'advertisements': data,
-        'title': title,
+        'page_obj': page_obj,
         'daily_ads': daily_ads,
         'weekly_ads': weekly_ads,
+        'title': title,
     }
     return render(request, 'index.html', context)
 

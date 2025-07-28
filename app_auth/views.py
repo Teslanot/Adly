@@ -35,4 +35,6 @@ def register(request):
             return redirect('profile')
     else:
         form = CustomUserCreationForm()
+        if request.user.is_authenticated:
+            return redirect(reverse('profile'))
     return render(request, 'register.html', {'form': form})

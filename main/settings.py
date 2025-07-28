@@ -67,7 +67,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = config('EMAIL_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
 
-
+LOGIN_URL = 'login'
 
 # Для подключения с использованием имени службы из файла службы подключения и пароля из файла паролей, вы должны указать их в OPTIONS части конфигурации вашей базы данных в DATABASES:
 # DATABASES = {
