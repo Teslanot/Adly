@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from .models import Profile
+from .models import Profile, Comment
 
 User = get_user_model()
 
@@ -89,3 +89,21 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             field.widget.attrs.update({
                 'class': 'w-full pl-4 pr-4 py-3 bg-white/80 backdrop-blur-sm border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 placeholder-gray-400 text-sm'
             })
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text', 'parent']
+        widgets = {
+            'text': forms.Textarea(attrs={
+                'rows': 3,
+                'placeholder': 'Напишите комметарий...',
+                'class': 'w-full p-2 border round'
+            })
+        }
+    parent = forms.ModelChoiceField(
+        queryset=Comment.objects.all(),
+        required=False,
+        widget=forms.HiddenInput()
+    )

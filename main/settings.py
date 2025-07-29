@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'add',
     'app_auth'
 ]
-# 'crispy_forms'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -69,28 +69,6 @@ EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
 
 LOGIN_URL = 'login'
 
-# Для подключения с использованием имени службы из файла службы подключения и пароля из файла паролей, вы должны указать их в OPTIONS части конфигурации вашей базы данных в DATABASES:
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "OPTIONS": {
-#             "service": "my_service",
-#             "passfile": ".my_pgpass",
-#         },
-#     }
-# }
-
-
-# .pg_service.conf-----------------
-
-# [my_service]
-# host=localhost
-# user=USER
-# dbname=NAME
-# port=5432
-
-# .my_pgpass-----------------------------
-# localhost:5432:NAME:USER:PASSWORD
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -131,6 +109,3 @@ MEDIA_ROOT  = BASE_DIR/'media'
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-# CRISPY_TEMPLATE_PACK = 'uni_form'

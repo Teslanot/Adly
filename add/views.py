@@ -7,8 +7,8 @@ from django.urls import reverse_lazy
 
 from .models import Advertisement
 from .models import Profile
-from .forms import AdvertisementForm
-from .forms import ProfileUpdateForm, AvatarUpdateForm, CustomPasswordChangeForm
+from .models import Comment
+from .forms import AdvertisementForm, ProfileUpdateForm, AvatarUpdateForm, CustomPasswordChangeForm, CommentForm
 
 from django.db.models import Count
 from django.contrib.auth import get_user_model
@@ -51,7 +51,7 @@ def home(request):
         'weekly_ads': weekly_ads,
         'title': title,
     }
-    return render(request, 'index.html', context)
+    return render(request, 'main/index.html', context)
 
 def top_sellers(request):
     users = User.objects.annotate(
@@ -59,7 +59,7 @@ def top_sellers(request):
     ).order_by('-adv_count')
 
     context = {"users" : users}
-    return render(request, 'top-sellers.html', context)
+    return render(request, 'main/top-sellers.html', context)
 
 
 
@@ -83,16 +83,38 @@ def favorit_list(request):
     user = request.user
     favorites = user.favorite_adv.all()
     context = {"favorite_list": favorites}
-    return render(request, 'all-fav.html', context)
+    return render(request, 'actions/all-fav.html', context)
 
 
 
 
 def post_adv_detail(request: WSGIRequest, pk):
     # post_adv/<int:pk>/
-    adv = Advertisement.objects.get(id = pk)
-    context = {"adv" : adv}
-    return render(request, 'advertisement.html', context)
+    adv = get_object_or_404(Advertisement, id=pk)
+    comments = adv.comments.filter(parent__isnull=True).select_related('author__profile').prefetch_related('replies__author__profile')
+
+
+    if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('login')
+        
+
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.adv = adv
+            comment.author = request.user
+            comment.save()
+            return redirect('post_adv_detail', pk=pk)
+    else:
+        form = CommentForm()
+
+    context = {
+        'adv': adv,
+        'comments': comments,
+        'form': form
+    }
+    return render(request, 'main/advertisement.html', context)
 
 
 def post_adv(request: WSGIRequest):
@@ -122,7 +144,7 @@ def post_adv(request: WSGIRequest):
         form = AdvertisementForm()
 
     context = {'form' : form}
-    return render(request, 'advertisement-post.html', context)
+    return render(request, 'actions/advertisement-post.html', context)
 
 @login_required
 def profile(request):
@@ -135,7 +157,7 @@ def profile(request):
         "adv_count": adv_count,
         "user": user
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'profile/profile.html', context)
 
 
 
@@ -157,7 +179,7 @@ def edit_profile(request):
         user_form = ProfileUpdateForm(instance=user)
         avatar_form = AvatarUpdateForm(instance=profile)
 
-    return render(request, 'edit_profile.html', {
+    return render(request, 'profile/edit_profile.html', {
         'user_form': user_form,
         'avatar_form': avatar_form,
     })
@@ -182,14 +204,14 @@ def delete_adv(request, pk):
 
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     form_class = CustomPasswordChangeForm
-    template_name = 'change_password.html'
+    template_name = 'profile/change_password.html'
     success_message = "Ваш пароль успешно изменен"
     success_url = reverse_lazy('profile')
 
 class ResetPasswordView(SuccessMessageMixin, PasswordResetView):
-    template_name = 'password_reset.html'
-    email_template_name = 'password_reset_email.html'
-    subject_template_name = 'password_reset_subject.txt'
+    template_name = 'profile/password_reset.html'
+    email_template_name = 'profile/password_reset_email.html'
+    subject_template_name = 'profile/password_reset_subject.txt'
     success_message = (
         "Инструкция по сбросу пароля отправлена, если такой email существует в системе."
     )

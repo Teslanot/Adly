@@ -48,7 +48,8 @@
   <div class="max-w-4xl mx-auto mt-8 px-4">
     <div class="mb-4">
       <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-700">
-        👤 Разместил: {{ adv.user }}
+        <img src="{{ adv.user.profile.avatar.url }}" class="w-6 h-6 rounded-full object-cover mr-2" alt="Аватар">
+        👤 {{ adv.user.username }}
       </span>
     </div>
 
@@ -78,5 +79,67 @@
       </div>
     </div>
   </div>
+  <div class="max-w-4xl mx-auto p-4">
+
+    <h2 class="text-xl font-bold mt-6 mb-4">Комментарии</h2>
+
+    {% if user.is_authenticated %}
+      <form method="post" class="bg-gray-50 p-4 rounded-lg shadow-sm space-y-4">
+        {% csrf_token %}
+        <textarea name="text" rows="3" class="w-full border border-gray-300 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none" placeholder="Оставьте ваш комментарий..."></textarea>
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Добавить комментарий</button>
+      </form>
+    {% else %}
+      <p class="text-gray-600">Чтобы оставить комментарий, <a href="{% url 'login' %}" class="text-blue-600 underline">войдите в аккаунт</a>.</p>
+    {% endif %}
+
+    {% for comment in comments %}
+      <div class="bg-gray-100 p-4 rounded-lg shadow-sm flex gap-3 items-start mb-4">
+        <img src="{{ comment.author.profile.avatar.url }}" class="w-10 h-10 rounded-full object-cover" alt="Аватар">
+        <div>
+          <div class="text-sm text-gray-800 font-semibold">
+            {{ comment.author.username }}
+            <span class="text-xs text-gray-500 ml-2">{{ comment.created_at|date:"d.m.Y H:i" }}</span>
+          </div>
+          <div class="text-gray-700 mt-1">{{ comment.text }}</div>
+
+          {% if user.is_authenticated %}
+            <button class="text-blue-600 text-sm mt-1 reply-toggle" data-id="{{ comment.id }}">Ответить</button>
+
+            <form method="post" class="reply-form mt-2 hidden" data-parent="{{ comment.id }}">
+              {% csrf_token %}
+              <textarea name="text" rows="2" class="w-full border rounded p-2 text-sm" placeholder="Ваш ответ..."></textarea>
+              <input type="hidden" name="parent" value="{{ comment.id }}">
+              <button type="submit" class="mt-1 text-sm bg-blue-500 text-white px-3 py-1 rounded">Ответить</button>
+            </form>
+          {% endif %}
+
+          {% for reply in comment.replies.all %}
+            <div class="mt-4 ml-8 bg-gray-50 p-3 rounded shadow-sm flex gap-3 items-start">
+              <img src="{{ reply.author.profile.avatar.url }}" class="w-8 h-8 rounded-full object-cover" alt="Аватар">
+              <div>
+                <div class="text-sm text-gray-800 font-semibold">
+                  {{ reply.author.username }}
+                  <span class="text-xs text-gray-500 ml-2">{{ reply.created_at|date:"d.m.Y H:i" }}</span>
+                </div>
+                <div class="text-gray-700 mt-1 text-sm">{{ reply.text }}</div>
+              </div>
+            </div>
+          {% endfor %}
+
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-gray-500">Пока нет комментариев.</p>
+    {% endfor %}
+  </div>
 </div>
+<script>
+  document.querySelectorAll('.reply-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const form = btn.nextElementSibling;
+      form.classList.toggle('hidden');
+    });
+  });
+</script>
 {% endblock %}

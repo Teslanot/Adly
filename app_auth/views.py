@@ -17,11 +17,11 @@ def login_view(request):
         if user:
             login(request, user)
             return redirect(reverse('profile'))
-        return render(request, 'login.html', {"error": "Неправильный логин или пароль"})
+        return render(request, 'auth/login.html', {"error": "Неправильный логин или пароль"})
     else:
         if request.user.is_authenticated:
             return redirect(reverse('profile'))
-        return render(request, 'login.html')
+        return render(request, 'auth/login.html')
 
 def register(request):
     if request.method == 'POST':
@@ -37,4 +37,4 @@ def register(request):
         form = CustomUserCreationForm()
         if request.user.is_authenticated:
             return redirect(reverse('profile'))
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'auth/register.html', {'form': form})

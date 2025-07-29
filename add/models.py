@@ -8,12 +8,6 @@ from django.core.validators import RegexValidator
 from django.contrib.auth import get_user_model
 from django.urls import reverse 
 
-# главный
-# venv/Scripts/activate   
-# py manage.py makemigrations
-# py manage.py migrate
-
-
 
 User = get_user_model()
 
@@ -81,3 +75,17 @@ class Advertisement(models.Model):
 
     class Meta:
        db_table = 'Advertisement'
+
+
+class Comment(models.Model):
+    adv = models.ForeignKey('Advertisement', on_delete=models.CASCADE, related_name='comments')
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField("Комментарий", max_length=1000)
+    created_at = models.DateTimeField(auto_now_add=True)
+    parent = models.ForeignKey('self', null=True, blank=True, on_delete=models.CASCADE, related_name='replies')
+
+    def is_reply(self):
+        return self.parent is not None
+
+    def __str__(self):
+        return f'Комментарий от {self.author.username} на {self.adv.title}'
