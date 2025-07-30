@@ -19,6 +19,7 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.views import PasswordChangeView
 
 from datetime import datetime, timedelta
+import random
 
 from django.http import JsonResponse
 
@@ -31,7 +32,7 @@ User = get_user_model()
 def home(request):
     title = request.GET.get('query')
     if title:
-        data = Advertisement.objects.filter(title__icontains = title)
+        data = Advertisement.objects.filter(title__icontains=title)
     else:
         data = Advertisement.objects.all().order_by('-created')
     
@@ -45,11 +46,44 @@ def home(request):
     daily_ads = Advertisement.objects.filter(created=today)[:10]
     weekly_ads = Advertisement.objects.filter(created=week_ago)[:10]
 
+    all_ads = Advertisement.objects.all()
+    
+    if all_ads.exists():
+        if all_ads.count() >= 3:
+            carousel_ads = random.sample(list(all_ads), 3)
+        else:
+            carousel_ads = list(all_ads)
+            remaining_slots = 3 - len(carousel_ads)
+            
+            default_items = [
+                {
+                    'title': 'Digital Prism',
+                    'description': 'Where geometry meets art in a stunning display of light and form.',
+                    'image': 'static/img/adv.png',
+                    'is_default': True
+                },
+                {
+                    'title': 'Tech Haven', 
+                    'description': 'Immerse yourself in the cutting edge of technology and innovation.',
+                    'image': 'static/img/adv.png',
+                    'is_default': True
+                },
+                {
+                    'title': 'Neural Dreams',
+                    'description': 'AI-generated masterpieces that blur the line between human and machine creativity.',
+                    'image': 'static/img/adv.png', 
+                    'is_default': True
+                }
+            ]
+            
+            carousel_ads.extend(default_items[:remaining_slots])
+
     context = {
         'page_obj': page_obj,
         'daily_ads': daily_ads,
         'weekly_ads': weekly_ads,
         'title': title,
+        'carousel_ads': carousel_ads,
     }
     return render(request, 'main/index.html', context)
 

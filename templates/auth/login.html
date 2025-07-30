@@ -115,16 +115,5 @@
     </div>
   </main>
 </div>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  const form = document.querySelector('.fade-in');
-  if (form) {
-    setTimeout(() => {
-      form.style.opacity = '1';
-      form.style.transform = 'translateY(0)';
-    }, 200);
-  }
-});
-</script>
+<script src="{% static 'js/animations.js' %}"></script>
 {% endblock %}
