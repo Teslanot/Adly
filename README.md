@@ -117,8 +117,8 @@ adboard/
 
 ## 👤 Автор
 Создан с нуля на Django ❤️
-Автор: [Dan Aleks (Teslanot)]
-GitHub: https://github.com/Teslanot
+- Автор: Dan Aleks (Teslanot)
+- GitHub: https://github.com/Teslanot
 
 ---
 
